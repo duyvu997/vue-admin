@@ -51,6 +51,20 @@ export default new Router({
       ]
     },
     {
+      path: '/lessons',
+      component: Layout,
+      children: [
+        {
+          path: 'index',
+          component: () => import(/* webpackChunkName: "dashboard" */ '@/views/lessons/index.vue'),
+          meta: {
+            title: 'Lessons',
+            icon: 'dashboard'
+          }
+        }
+      ]
+    },
+    {
       path: '/example',
       component: Layout,
       redirect: '/example/tree',
