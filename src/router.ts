@@ -65,6 +65,24 @@ export default new Router({
       ]
     },
     {
+      path: '/lessons',
+      component: Layout,
+      meta: {
+        title: 'Create Course',
+        hidden: true
+      },
+      children: [
+        {
+          path: 'create',
+          component: () => import(/* webpackChunkName: "dashboard" */ '@/views/formCreateCourse/index.vue'),
+          meta: {
+            title: 'Create Course',
+            hidden: true
+          }
+        }
+      ]
+    },
+    {
       path: '/example',
       component: Layout,
       redirect: '/example/tree',

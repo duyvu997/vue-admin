@@ -9,7 +9,7 @@
         </el-radio-group>
       </div>
       <div>
-        <el-button>Tạo khoá học mới</el-button>
+        <el-button @click="$router.push({path: '/lessons/create'})">Tạo khoá học mới</el-button>
       </div>
     </div>
     <el-table
@@ -68,12 +68,7 @@
         </template>
       </el-table-column><el-table-column align="center" width="90">
         <template slot-scope="scope">
-          <el-progress
-            type="circle"
-            :percentage="scope.row.progress"
-            stroke-width="3"
-            width="50"
-            ></el-progress>
+          {{scope.row.progress}} %
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" width="110" align="center">
@@ -91,7 +86,6 @@
 </template>
 
 <script lang="ts">
-import { getArticles } from '@/api/articles'
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component({
