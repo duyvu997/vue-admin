@@ -1,53 +1,39 @@
 <template>
   <div class="form-create-course-container">
-    <el-form
-      ref="form"
-      :model="form"
-      :rules="rules"
-      label-width="160px"
-    >
+    <el-form ref="form" :model="form" :rules="rules" label-width="160px">
       <el-form-item label="Tên khoá học" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
       <el-form-item label="Thời lượng khoá học" prop="duration">
-        <div class='duration-field'>
-            <div class="field" style="margin-right: 10px">
-              <el-input v-model="form.duration" />
-            </div>
-            <div class="field">
-              <el-select
-                v-model="form.durationType"
-                placeholder="Lựa chọn đơn vị thời gian"
-                style="width: 100%;"
-              >
-                <el-option
-                  label="giây"
-                  value="giây"
-                />
-                <el-option
-                  label="phút"
-                  value="phút"
-                />
-              </el-select>
+        <div class="duration-field">
+          <div class="field" style="margin-right: 10px">
+            <el-input v-model="form.duration" />
+          </div>
+          <div class="field">
+            <el-select
+              v-model="form.durationType"
+              placeholder="Lựa chọn đơn vị thời gian"
+              style="width: 100%;"
+            >
+              <el-option label="giây" value="giây" />
+              <el-option label="phút" value="phút" />
+            </el-select>
           </div>
         </div>
       </el-form-item>
       <el-form-item label="Thời gian học" prop="date">
-          <el-date-picker
-            v-model="form.date"
-            type="date"
-            placeholder="Lựa chọn thời gian học"
-            style="width: 100%;"
-          />
+        <el-date-picker
+          v-model="form.date"
+          type="date"
+          placeholder="Lựa chọn thời gian học"
+          style="width: 100%;"
+        />
       </el-form-item>
       <el-form-item label="Thông điệp ngắn" prop="shortMessage">
         <el-input v-model="form.shortMessage" />
       </el-form-item>
       <el-form-item label="Mô tả" prop="description">
-        <el-input
-          v-model="form.description"
-          type="textarea"
-        />
+        <el-input v-model="form.description" type="textarea" />
       </el-form-item>
       <el-form-item label="Trạng thái" prop="status">
         <el-switch v-model="form.status" />
@@ -75,10 +61,7 @@
         <el-button @click="onCancel">
           Huỷ
         </el-button>
-        <el-button
-          type="primary"
-          @click="onSubmit('form')"
-        >
+        <el-button type="primary" @click="onSubmit('form')">
           Tạo
         </el-button>
       </el-form-item>
@@ -88,6 +71,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { CourseModule } from '@/store/modules/course'
 
 @Component({
   name: 'FormCreateCourse'
@@ -104,7 +88,7 @@ export default class extends Vue {
     minimumAge: '',
     maximumAge: '',
     picture: []
-  };
+  }
 
   private rules = {
     name: [
@@ -127,14 +111,30 @@ export default class extends Vue {
     ]
   }
 
-  private formRef(formName: string): Vue & { validate: (func: (valid: boolean) => boolean) => void } {
-    return this.$refs[formName] as Vue & { validate: (func: (valid: boolean) => boolean) => void }
+  private formRef(
+    formName: string
+  ): Vue & { validate: (func: (valid: boolean) => boolean) => void } {
+    return this.$refs[formName] as Vue & {
+      validate: (func: (valid: boolean) => boolean) => void
+    }
   }
 
   private onSubmit(formName: string) {
     this.formRef(formName).validate((valid: boolean) => {
       if (valid) {
-        // TODO: call api submit data
+        const courseTobeCreated = {
+          description: this.form.description,
+          duration: this.form.duration,
+          endDate: '',
+          fileId: null,
+          image: '',
+          minAge: this.form.minimumAge,
+          name: this.form.name,
+          shortMessage: this.form.shortMessage,
+          startDate: this.form.date,
+          status: this.form.status ? 'ACTIVE' : 'DEACTIVE'
+        }
+        CourseModule.createCourse(courseTobeCreated)
         alert('submit!')
         return true
       } else {
@@ -157,7 +157,7 @@ export default class extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.form-create-course{
+.form-create-course {
   &-container {
     margin: 30px;
 
@@ -165,10 +165,9 @@ export default class extends Vue {
       display: flex;
 
       .field {
-        flex: 1 0
+        flex: 1 0;
       }
     }
   }
-
 }
 </style>

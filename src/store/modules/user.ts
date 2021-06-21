@@ -5,7 +5,7 @@ import {
   Mutation,
   getModule
 } from 'vuex-module-decorators'
-import { login, logout, getUserInfo } from '@/api/users'
+import { login, logout } from '@/api/users'
 import { getToken, setToken, removeToken } from '@/utils/cookies'
 import store from '@/store'
 
@@ -71,17 +71,9 @@ class User extends VuexModule implements IUserState {
     if (this.token === '') {
       throw Error('GetUserInfo: token is undefined!')
     }
-    // const { data } = await getUserInfo({ /* Your params here */ })
-    // if (!data) {
-    // throw Error('Verification failed, please Login again.')
-    // }
-    // const { roles, name, avatar, introduction } = data.user
-    // roles must be a non-empty array
-
-    // These vars just for cheating login flow.
     const roles = ['admin']
     const name = 'vnduy'
-    const avatar = 'sdadsf'
+    const avatar = 'https://ds055uzetaobb.cloudfront.net/brioche/chapter/science_essentials-GkPf0c.png?width=254'
     const introduction = ''
     if (!roles || roles.length <= 0) {
       throw Error('GetUserInfo: roles must be a non-null array!')

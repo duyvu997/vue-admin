@@ -70,7 +70,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { getArticles } from '@/api/articles'
-import { IArticleData } from '@/api/types'
 
 @Component({
   name: 'Table',
@@ -89,7 +88,6 @@ import { IArticleData } from '@/api/types'
   }
 })
 export default class extends Vue {
-  private list: IArticleData[] = []
   private listLoading = true
   private listQuery = {
     page: 1,
@@ -103,7 +101,6 @@ export default class extends Vue {
   private async getList() {
     this.listLoading = true
     const { data } = await getArticles(this.listQuery)
-    this.list = data.items
     // Just to simulate the time of the request
     setTimeout(() => {
       this.listLoading = false

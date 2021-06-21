@@ -37,7 +37,8 @@ module.exports = {
     'vue/eqeqeq': 'error',
     'vue/key-spacing': 'error',
     'vue/match-component-file-name': 'error',
-    'vue/object-curly-spacing': 'error'
+    'vue/object-curly-spacing': [2, "always"],
+    'object-curly-spacing': [2, "always"]
   },
   overrides: [
     {
