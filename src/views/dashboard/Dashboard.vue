@@ -25,8 +25,6 @@ export default class extends Vue {
 .dashboard {
   &-container {
     margin: 30px;
-
   }
-
 }
 </style>

@@ -42,7 +42,7 @@ export default new Router({
       children: [
         {
           path: 'dashboard',
-          component: () => import(/* webpackChunkName: "dashboard" */ '@/views/dashboard/index.vue'),
+          component: () => import(/* webpackChunkName: "dashboard" */ '@/views/dashboard/Dashboard.vue'),
           meta: {
             title: 'Dashboard',
             icon: 'dashboard'
@@ -64,9 +64,17 @@ export default new Router({
         },
         {
           path: 'create',
-          component: () => import(/* webpackChunkName: "dashboard" */ '@/views/formCreateCourse/index.vue'),
+          component: () => import(/* webpackChunkName: "dashboard" */ '@/views/courses/CreateCourse.vue'),
           meta: {
             title: 'Create Course',
+            hidden: true
+          }
+        },
+        {
+          path: 'edit/:courseId',
+          component: () => import(/* webpackChunkName: "dashboard" */ '@/views/courses/UpdateCourse.vue'),
+          meta: {
+            title: 'Update Course',
             hidden: true
           }
         }

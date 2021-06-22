@@ -38,7 +38,9 @@ module.exports = {
     'vue/key-spacing': 'error',
     'vue/match-component-file-name': 'error',
     'vue/object-curly-spacing': [2, "always"],
-    'object-curly-spacing': [2, "always"]
+    'object-curly-spacing': [2, "always"],
+    'no-trailing-spaces': 0,
+    'no-multiple-empty-lines': 0
   },
   overrides: [
     {

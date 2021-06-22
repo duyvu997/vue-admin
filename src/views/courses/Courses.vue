@@ -44,7 +44,7 @@
       <el-table-column width="110" align="center">
         <template slot-scope="scope">
           <i class="el-icon-time" />
-          <span>{{ scope.row.duration }}</span>
+          <span>{{ (scope.row.duration / 60).toFixed() }} phút</span>
         </template>
       </el-table-column>
       <el-table-column width="90" align="center">
@@ -81,8 +81,8 @@
         </template>
       </el-table-column>
       <el-table-column align="right">
-        <template>
-          <el-button>Cài đặt</el-button>
+        <template slot-scope="scope">
+          <el-button @click="handleEditCourse(scope.row.id)">Cài đặt</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -123,6 +123,11 @@ export default class extends Vue {
     } catch (error) {
       console.warn(error)
     }
+  }
+
+  private handleEditCourse(courseId: string) {
+    console.log(123333, courseId, 1233)
+    this.$router.push({ path: `edit/${courseId}` })
   }
 }
 </script>

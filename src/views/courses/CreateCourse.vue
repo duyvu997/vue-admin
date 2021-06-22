@@ -74,7 +74,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { CourseModule } from '@/store/modules/course'
 
 @Component({
-  name: 'FormCreateCourse'
+  name: 'CreateCourse'
 })
 export default class extends Vue {
   private form = {
@@ -146,7 +146,7 @@ export default class extends Vue {
 
   private onCancel() {
     this.$router.push({
-      path: '/lessons/index'
+      path: '/courses/index'
     })
   }
 
