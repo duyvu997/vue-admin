@@ -1,6 +1,6 @@
 <template>
   <div class="lessons-container">
-    <div class='lessons-header'>
+    <div class="lessons-header">
       <div>
         <el-radio-group v-model="listQuery.filter.status">
           <el-radio-button label="Tất cả">Tất cả</el-radio-button>
@@ -9,7 +9,9 @@
         </el-radio-group>
       </div>
       <div>
-        <el-button @click="$router.push({path: '/lessons/create'})">Tạo khoá học mới</el-button>
+        <el-button @click="$router.push({ path: '/courses/create' })"
+          >Tạo khoá học mới</el-button
+        >
       </div>
     </div>
     <el-table
@@ -22,7 +24,9 @@
     >
       <el-table-column align="center" width="95">
         <template slot-scope="scope">
-           <div class="block"><el-avatar :size="50" :src="scope.row.picture"></el-avatar></div>
+          <div class="block">
+            <el-avatar :size="50" :src="scope.row.courseImageUrl"></el-avatar>
+          </div>
         </template>
       </el-table-column>
       <el-table-column>
@@ -33,26 +37,26 @@
             </b>
           </div>
           <div style="font-size: 12px">
-           {{ scope.row.teacherName }}
+            {{ scope.row.authors }}
           </div>
         </template>
       </el-table-column>
       <el-table-column width="110" align="center">
         <template slot-scope="scope">
           <i class="el-icon-time" />
-          <span>{{ scope.row.duration }}</span>
+          <span>{{ (scope.row.duration / 60).toFixed() }} phút</span>
         </template>
       </el-table-column>
       <el-table-column width="90" align="center">
         <template slot-scope="scope">
-          <i class='el-icon-user-solid'></i>
-          {{ scope.row.students }}
+          <i class="el-icon-user-solid"></i>
+          {{ scope.row.teachers }}
         </template>
       </el-table-column>
       <el-table-column width="80" align="center">
         <template slot-scope="scope">
-          <i class='el-icon-user-solid'></i>
-          {{ scope.row.studentsGear }}
+          <i class="el-icon-user-solid"></i>
+          {{ scope.row.members }}
         </template>
       </el-table-column>
       <el-table-column align="center" width="80">
@@ -63,12 +67,12 @@
       </el-table-column>
       <el-table-column align="center" width="80">
         <template slot-scope="scope">
-          <i class="el-icon-s-data" style="transform: rotate(90deg)"/>
-          <span>{{ scope.row.units }}</span>
-        </template>
-      </el-table-column><el-table-column align="center" width="90">
+          <i class="el-icon-s-data" style="transform: rotate(90deg)" />
+          <span>{{ scope.row.quizzes }}</span>
+        </template> </el-table-column
+      ><el-table-column align="center" width="90">
         <template slot-scope="scope">
-          {{scope.row.progress}} %
+          {{ scope.row.progress || 0 }} %
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" width="110" align="center">
@@ -77,8 +81,8 @@
         </template>
       </el-table-column>
       <el-table-column align="right">
-        <template>
-          <el-button>Cài đặt</el-button>
+        <template slot-scope="scope">
+          <el-button @click="handleEditCourse(scope.row.id)">Cài đặt</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -86,97 +90,43 @@
 </template>
 
 <script lang="ts">
+import { CourseModule } from '@/store/modules/course'
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component({
-  name: 'Lessons'
+  name: 'Courses'
 })
 export default class extends Vue {
-  private list = [];
-  private listLoading = true;
+  private list = []
+  private listLoading = true
   private listQuery = {
     page: 1,
     limit: 20,
     filter: {
       status: 'all'
     }
-  };
+  }
 
   created() {
     this.getList()
   }
 
-  private getList() {
+  private async getList() {
     this.listLoading = true
     try {
-      const { data } = {
-        data: {
-          items: [
-            {
-              name: 'Lop 1',
-              teacherName: 'Co 1',
-              duration: '10',
-              durationType: 'giây',
-              students: 30,
-              studentsGear: 4,
-              lessons: 3,
-              units: 20,
-              progress: 83,
-              date: '',
-              shortDesc: '',
-              desc: '',
-              status: false,
-              minimumAge: '',
-              maximumAge: '',
-              picture: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-            },
-            {
-              name: 'Lop 2',
-              teacherName: 'Co 2',
-              duration: '10',
-              durationType: 'giây',
-              students: 30,
-              studentsGear: 4,
-              lessons: 3,
-              units: 20,
-              progress: 83,
-              date: '',
-              shortDesc: '',
-              desc: '',
-              status: false,
-              minimumAge: '',
-              maximumAge: '',
-              picture: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-            },
-            {
-              name: 'Lop 3',
-              teacherName: 'Co 3',
-              duration: '10',
-              durationType: 'giây',
-              students: 30,
-              studentsGear: 4,
-              lessons: 3,
-              units: 20,
-              progress: 83,
-              date: '',
-              shortDesc: '',
-              desc: '',
-              status: false,
-              minimumAge: '',
-              maximumAge: '',
-              picture: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-            }
-          ]
-        }
-      }
-      this.list = data.items as any
+      const courses = await CourseModule.getCourses()
+      this.list = courses.data.map((course: any) => ({
+        ...course,
+        status: course.status === 'ENABLE'
+      }))
+      this.listLoading = false
     } catch (error) {
       console.warn(error)
     }
-    // Just to simulate the time of the request
-    setTimeout(() => {
-      this.listLoading = false
-    }, 0.5 * 1000)
+  }
+
+  private handleEditCourse(courseId: string) {
+    this.$router.push({ path: `edit/${courseId}` })
   }
 }
 </script>
