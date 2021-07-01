@@ -57,105 +57,105 @@
       >
         Sign in
       </el-button>
-
     </el-form>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import Vue from 'vue'
 import { Route } from 'vue-router'
 import { Dictionary } from 'vue-router/types/router'
 import { Form as ElForm, Input } from 'element-ui'
 import { UserModule } from '@/store/modules/user'
 
-@Component({
-  name: 'Login'
-})
-export default class extends Vue {
-  private validatePassword = (rule: any, value: string, callback: Function) => {
-    if (value.length < 6) {
-      callback(new Error('The password can not be less than 6 digits'))
-    } else {
-      callback()
+export default Vue.extend({
+  name: 'Login',
+  data() {
+    return {
+      loginForm: {
+        username: 'vnduy',
+        password: 'password'
+      },
+      loginRules: {
+        username: [{ required: true, trigger: 'blur' }],
+        password: [{ trigger: 'blur' }]
+      },
+      passwordType: 'password',
+      loading: false,
+      showDialog: false,
+      redirect: null || '',
+      otherQuery: {}
     }
-  }
+  },
+  methods: {
+    validatePassword(rule: any, value: string, callback: Function) {
+      if (value.length < 6) {
+        callback(new Error('The password can not be less than 6 digits'))
+      } else {
+        callback()
+      }
+    },
+    showPwd() {
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
+      } else {
+        this.passwordType = 'password'
+      }
+      this.$nextTick(() => {
+        ;(this.$refs.password as Input).focus()
+      })
+    },
 
-  private loginForm = {
-    username: 'vnduy',
-    password: 'password'
-  }
+    handleLogin() {
+      ;(this.$refs.loginForm as ElForm).validate(async (valid: boolean) => {
+        if (valid) {
+          this.loading = true
+          const a = await UserModule.Login(this.loginForm)
+          console.log(a)
+          this.$router.push({
+            path: this.redirect || '/',
+            query: this.otherQuery
+          })
+          // Just to simulate the time of the request
+          setTimeout(() => {
+            this.loading = false
+          }, 0.5 * 1000)
+        } else {
+          return false
+        }
+      })
+    },
 
-  private loginRules = {
-    username: [{ required: true, trigger: 'blur' }],
-    password: [{ validator: this.validatePassword, trigger: 'blur' }]
-  }
-
-  private passwordType = 'password'
-  private loading = false
-  private showDialog = false
-  private redirect?: string
-  private otherQuery: Dictionary<string> = {}
-
-  @Watch('$route', { immediate: true })
-  private onRouteChange(route: Route) {
-    // TODO: remove the "as Dictionary<string>" hack after v4 release for vue-router
-    // See https://github.com/vuejs/vue-router/pull/2050 for details
-    const query = route.query as Dictionary<string>
-    if (query) {
-      this.redirect = query.redirect
-      this.otherQuery = this.getOtherQuery(query)
+    getOtherQuery(query: Dictionary<string>) {
+      return Object.keys(query).reduce((acc, cur) => {
+        if (cur !== 'redirect') {
+          acc[cur] = query[cur]
+        }
+        return acc
+      }, {} as Dictionary<string>)
     }
-  }
+  },
+
+  watch: {
+    $routes(route: Route) {
+      // TODO: remove the "as Dictionary<string>" hack after v4 release for vue-router
+      // See https://github.com/vuejs/vue-router/pull/2050 for details
+      const query = route.query as Dictionary<string>
+      if (query) {
+        this.redirect = query.redirect
+        this.otherQuery = this.getOtherQuery(query)
+      }
+    }
+  },
 
   mounted() {
     if (this.loginForm.username === '') {
-      (this.$refs.username as Input).focus()
+      ;(this.$refs.username as Input).focus()
     } else if (this.loginForm.password === '') {
-      (this.$refs.password as Input).focus()
+      ;(this.$refs.password as Input).focus()
     }
   }
-
-  private showPwd() {
-    if (this.passwordType === 'password') {
-      this.passwordType = ''
-    } else {
-      this.passwordType = 'password'
-    }
-    this.$nextTick(() => {
-      (this.$refs.password as Input).focus()
-    })
-  }
-
-  private handleLogin() {
-    (this.$refs.loginForm as ElForm).validate(async(valid: boolean) => {
-      if (valid) {
-        this.loading = true
-        const a = await UserModule.Login(this.loginForm)
-        console.log(a)
-        this.$router.push({
-          path: this.redirect || '/',
-          query: this.otherQuery
-        })
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.loading = false
-        }, 0.5 * 1000)
-      } else {
-        return false
-      }
-    })
-  }
-
-  private getOtherQuery(query: Dictionary<string>) {
-    return Object.keys(query).reduce((acc, cur) => {
-      if (cur !== 'redirect') {
-        acc[cur] = query[cur]
-      }
-      return acc
-    }, {} as Dictionary<string>)
-  }
-}
+})
 </script>
 
 <style lang="scss">

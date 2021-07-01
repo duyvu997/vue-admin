@@ -114,7 +114,7 @@ export default class extends Vue {
   private async getList() {
     this.listLoading = true
     try {
-      const courses = await CourseModule.getCourse()
+      const courses = await CourseModule.getCourses()
       this.list = courses.data.map((course: any) => ({
         ...course,
         status: course.status === 'ENABLE'
@@ -126,7 +126,6 @@ export default class extends Vue {
   }
 
   private handleEditCourse(courseId: string) {
-    console.log(123333, courseId, 1233)
     this.$router.push({ path: `edit/${courseId}` })
   }
 }

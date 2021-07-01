@@ -1,14 +1,26 @@
 import request from '@/utils/request'
 
-export const createCourse = (data: any) =>
+const createCourse = (data: any) =>
   request({
     url: '/courses-management/courses',
     method: 'post',
     data
   })
 
-export const getCourses = () =>
+const getCourses = () =>
   request({
     url: '/courses-management/courses',
     method: 'get'
   })
+
+const getCourseById = (courseId: string) =>
+  request({
+    url: `/courses-management/courses/${courseId}`,
+    method: 'get'
+  })
+
+export default {
+  getCourses,
+  createCourse,
+  getCourseById
+}

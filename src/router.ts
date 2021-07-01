@@ -27,7 +27,7 @@ export default new Router({
   routes: [
     {
       path: '/login',
-      component: () => import(/* webpackChunkName: "login" */ '@/views/login/index.vue'),
+      component: () => import(/* webpackChunkName: "login" */ '@/views/login/Login.vue'),
       meta: { hidden: true }
     },
     {
