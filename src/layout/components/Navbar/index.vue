@@ -59,7 +59,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { AppModule } from '@/store/modules/app'
-import { UserModule } from '@/store/modules/user'
+import  UserModule  from '@/store/user/module'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
 
@@ -80,7 +80,7 @@ export default class extends Vue {
   }
 
   get avatar() {
-    return UserModule.avatar
+    return UserModule.getters.avatar
   }
 
   private toggleSideBar() {
@@ -88,7 +88,7 @@ export default class extends Vue {
   }
 
   private async logout() {
-    await UserModule.LogOut()
+    // await UserModule.LogOut()
     this.$router.push(`/login?redirect=${this.$route.fullPath}`)
   }
 }

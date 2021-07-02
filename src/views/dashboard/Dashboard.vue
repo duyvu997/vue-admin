@@ -4,21 +4,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { UserModule } from '@/store/modules/user'
+import { USER_NAMESPACE } from '@/store/user/action.type'
+import Vue from 'vue'
+import { mapGetters } from 'vuex'
 
-@Component({
-  name: 'Dashboard'
+export default Vue.extend( {
+  name: 'Dashboard',
+  computed: {
+    ...mapGetters(USER_NAMESPACE,  ['name', 'roles'])
+  }
 })
-export default class extends Vue {
-  get name() {
-    return UserModule.name
-  }
-
-  get roles() {
-    return UserModule.roles
-  }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -28,3 +23,4 @@ export default class extends Vue {
   }
 }
 </style>
+
