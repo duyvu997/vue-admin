@@ -3,9 +3,8 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { Message } from 'element-ui'
 import { Route } from 'vue-router'
-import UserModule from '@/store/user/module'
-import store from './store'
-import { GET_USER_INFO, userAction } from './store/user/action.type'
+import store from '@/store/index'
+import { GET_USER_INFO, RESET_TOKEN, userAction } from './store/user/action.type'
 
 NProgress.configure({ showSpinner: false })
 
@@ -16,14 +15,14 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
   NProgress.start()
 
   // Determine whether the user has logged in
-  if (UserModule.getters.token.length) {
+  if (store.getters['UserModule/token']) {
     if (to.path === '/login') {
       // If is logged in, redirect to the home page
       next({ path: '/' })
       NProgress.done()
     } else {
       // Check whether the user has obtained his permission roles
-      if (UserModule.getters.roles.length === 0) {
+      if (store.getters['UserModule/roles'].length === 0) {
         try {
           // Get user info, including roles
           await store.dispatch(userAction(GET_USER_INFO))
@@ -31,7 +30,7 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
           next({ ...to, replace: true })
         } catch (err) {
           // Remove token and redirect to login page
-          // UserModule.ResetToken()
+          store.dispatch(userAction(RESET_TOKEN))
           Message.error(err || 'Has Error')
           next(`/login?redirect=${to.path}`)
           NProgress.done()

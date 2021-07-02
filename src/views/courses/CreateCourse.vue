@@ -70,8 +70,9 @@
 </template>
 
 <script lang="ts">
+import store from '@/store/index'
+import { courseAction, CREATE_COURSE } from '@/store/course/action.type'
 import { Component, Vue } from 'vue-property-decorator'
-import { CourseModule } from '@/store/modules/course'
 
 @Component({
   name: 'CreateCourse'
@@ -134,7 +135,7 @@ export default class extends Vue {
           startDate: this.form.date,
           status: this.form.status ? 'ACTIVE' : 'DEACTIVE'
         }
-        CourseModule.createCourse(courseTobeCreated)
+        store.dispatch(courseAction(CREATE_COURSE), courseTobeCreated)
         alert('submit!')
         return true
       } else {

@@ -66,7 +66,6 @@ import Vue from 'vue'
 import { Route } from 'vue-router'
 import { Dictionary } from 'vue-router/types/router'
 import { Form as ElForm, Input } from 'element-ui'
-import UserModule from '@/store/user/module'
 import store from '@/store/index'
 import { LOGIN, userAction } from '@/store/user/action.type'
 
@@ -109,11 +108,10 @@ export default Vue.extend({
     },
 
     handleLogin() {
-      ;(this.$refs.loginForm as ElForm).validate(async (valid: boolean) => {
+      (this.$refs.loginForm as ElForm).validate(async (valid: boolean) => {
         if (valid) {
           this.loading = true
-          const a = await store.dispatch(userAction(LOGIN), this.loginForm)
-          console.log(a)
+          await store.dispatch(userAction(LOGIN), this.loginForm)
           this.$router.push({
             path: this.redirect || '/',
             query: this.otherQuery

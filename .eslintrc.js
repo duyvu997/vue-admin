@@ -9,7 +9,7 @@ module.exports = {
     '@vue/typescript/recommended'
   ],
   parserOptions: {
-    ecmaVersion: 2020
+    ecmaVersion: 'es6'
   },
   rules: {
     '@typescript-eslint/ban-types': 'off',
@@ -29,7 +29,8 @@ module.exports = {
     'vue/key-spacing': 'error',
     'vue/match-component-file-name': 'error',
     'no-trailing-spaces': 0,
-    'no-multiple-empty-lines': 0
+    'no-multiple-empty-lines': 0,
+    'space-before-function-paren': 0
   },
   overrides: [
     {

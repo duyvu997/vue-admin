@@ -1,7 +1,17 @@
 import { Commit } from 'vuex'
-import { GET_USER_INFO, LOGIN, SET_AVATAR, SET_ERROR, SET_INTRODUCTION, SET_NAME, SET_ROLES, SET_TOKEN } from './action.type'
+import {
+  GET_USER_INFO,
+  LOGIN,
+  RESET_TOKEN,
+  SET_AVATAR,
+  SET_ERROR,
+  SET_INTRODUCTION,
+  SET_NAME,
+  SET_ROLES,
+  SET_TOKEN
+} from './action.type'
 import userApiClient from '@/api/users'
-import { getToken, setToken, removeToken } from '@/utils/cookies'
+import { setToken, removeToken } from '@/utils/cookies'
 
 interface IUserState {
   token: string
@@ -45,7 +55,7 @@ const actions = {
       username = username.trim()
       const { data } = await userApiClient.login({ username, password })
       setToken(data.jwtToken)
-      commit(SET_TOKEN, data.data.jwtToken)
+      commit(SET_TOKEN, data.jwtToken)
     } catch (error) {
       commit(SET_ERROR, error.response)
     }
@@ -67,26 +77,32 @@ const actions = {
     commit(SET_NAME, name)
     commit(SET_AVATAR, avatar)
     commit(SET_INTRODUCTION, introduction)
+  },
+
+  [RESET_TOKEN]({ commit }: { commit: Commit }) {
+    removeToken()
+    commit(SET_TOKEN, '')
+    commit(SET_ROLES, [])
   }
 }
 const mutations = {
-  SET_TOKEN(state: IUserState, token: string) {
+  [SET_TOKEN](state: IUserState, token: string) {
     state.token = token
   },
 
-  SET_NAME(state: IUserState, name: string) {
+  [SET_NAME](state: IUserState, name: string) {
     state.name = name
   },
 
-  SET_AVATAR(state: IUserState, avatar: string) {
+  [SET_AVATAR](state: IUserState, avatar: string) {
     state.avatar = avatar
   },
 
-  SET_INTRODUCTION(state: IUserState, introduction: string) {
+  [SET_INTRODUCTION](state: IUserState, introduction: string) {
     state.introduction = introduction
   },
 
-  SET_ROLES(state: IUserState, roles: string[]) {
+  [SET_ROLES](state: IUserState, roles: string[]) {
     state.roles = roles
   }
 }

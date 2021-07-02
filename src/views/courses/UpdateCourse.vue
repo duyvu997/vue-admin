@@ -101,7 +101,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CourseModule } from '@/store/modules/course'
+import { courseAction, CREATE_COURSE } from '@/store/course/action.type'
+import store from '@/store/index'
 
 export default Vue.extend({
   name: 'UpdateCourse',
@@ -166,7 +167,7 @@ export default Vue.extend({
             startDate: this.form.startDate,
             status: this.form.status ? 'ENABLE' : 'DISABLE'
           }
-          CourseModule.createCourse(courseTobeCreated)
+          store.dispatch(courseAction(CREATE_COURSE), courseTobeCreated)
           alert('submit!')
           return true
         } else {

@@ -56,7 +56,7 @@ export default new Router({
       children: [
         {
           path: 'index',
-          component: () => import('@/views/courses/Courses.vue'),
+          component: () => import('@/views/courses/CourseList.vue'),
           meta: {
             title: 'Courses',
             icon: 'table'

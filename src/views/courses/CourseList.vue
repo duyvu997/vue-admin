@@ -43,31 +43,31 @@
       </el-table-column>
       <el-table-column width="110" align="center">
         <template slot-scope="scope">
-          <i class="el-icon-time" />
+          <i class="icon-desc el-icon-time" />
           <span>{{ (scope.row.duration / 60).toFixed() }} phút</span>
         </template>
       </el-table-column>
       <el-table-column width="90" align="center">
         <template slot-scope="scope">
-          <i class="el-icon-user-solid"></i>
+          <i class="icon-desc el-icon-user-solid"></i>
           {{ scope.row.teachers }}
         </template>
       </el-table-column>
       <el-table-column width="80" align="center">
         <template slot-scope="scope">
-          <i class="el-icon-user-solid"></i>
+          <i class="icon-desc el-icon-user-solid"></i>
           {{ scope.row.members }}
         </template>
       </el-table-column>
       <el-table-column align="center" width="80">
         <template slot-scope="scope">
-          <i class="el-icon-notebook-2" />
+          <i class="icon-desc el-icon-notebook-2" />
           <span>{{ scope.row.lessons }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" width="80">
         <template slot-scope="scope">
-          <i class="el-icon-s-data" style="transform: rotate(90deg)" />
+          <i class="icon-desc el-icon-s-data" style="transform: rotate(90deg)" />
           <span>{{ scope.row.quizzes }}</span>
         </template> </el-table-column
       ><el-table-column align="center" width="90">
@@ -90,45 +90,50 @@
 </template>
 
 <script lang="ts">
-import { CourseModule } from '@/store/modules/course'
-import { Component, Vue } from 'vue-property-decorator'
+import Vue from 'vue'
+import store from '@/store'
+import { courseAction, GET_COURSES } from '@/store/course/action.type'
 
-@Component({
-  name: 'Courses'
-})
-export default class extends Vue {
-  private list = []
-  private listLoading = true
-  private listQuery = {
-    page: 1,
-    limit: 20,
-    filter: {
-      status: 'all'
+export default Vue.extend({
+  name: 'CourseList',
+
+  data() {
+    return {
+      listLoading: true,
+      list: [],
+      listQuery: {
+        page: 1,
+        limit: 20,
+        filter: {
+          status: 'all'
+        }
+      }
     }
-  }
+  },
 
   created() {
     this.getList()
-  }
+  },
 
-  private async getList() {
-    this.listLoading = true
-    try {
-      const courses = await CourseModule.getCourses()
-      this.list = courses.data.map((course: any) => ({
-        ...course,
-        status: course.status === 'ENABLE'
-      }))
-      this.listLoading = false
-    } catch (error) {
-      console.warn(error)
+  methods: {
+    async getList() {
+      this.listLoading = true
+      try {
+        const courses = await store.dispatch(courseAction(GET_COURSES))
+        this.list = courses.data.map((course: any) => ({
+          ...course,
+          status: course.status === 'ENABLE'
+        }))
+        this.listLoading = false
+      } catch (error) {
+        console.warn(error)
+      }
+    },
+    handleEditCourse(courseId: string) {
+      this.$router.push({ path: `edit/${courseId}` })
     }
   }
-
-  private handleEditCourse(courseId: string) {
-    this.$router.push({ path: `edit/${courseId}` })
-  }
-}
+})
 </script>
 
 <style lang="scss">
@@ -153,5 +158,9 @@ export default class extends Vue {
       box-shadow: unset;
     }
   }
+}
+
+.icon-desc {
+  margin-right: 0.3rem;
 }
 </style>
