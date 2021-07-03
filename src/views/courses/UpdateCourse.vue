@@ -49,8 +49,8 @@
           <el-form-item label="Trạng thái" prop="status">
             <el-switch v-model="form.status" />
           </el-form-item>
-          <el-form-item label="Độ tuổi tối thiểu" prop="minimumAge">
-            <el-input style="width: 49.4%;" v-model="form.minimumAge" />
+          <el-form-item label="Độ tuổi tối thiểu" prop="minAge">
+            <el-input style="width: 49.4%;" v-model="form.minAge" />
           </el-form-item>
           <el-form-item label="Hình ảnh" prop="picture">
             <el-upload
@@ -79,21 +79,260 @@
         <h3>Danh sách giáo viên</h3>
 
         <div class="grid-content bg-purple"></div>
-        <div class="grid-content bg-purple-light"></div>
+        <div class="grid-content bg-purple-light">
+          <el-table
+            v-loading="listLoading"
+            :data="list"
+            element-loading-text="Loading"
+            fit
+            highlight-current-row
+            :show-header="false"
+          >
+            <el-table-column align="center" width="95">
+              <template slot-scope="scope">
+                <div class="block">
+                  <el-avatar
+                    :size="50"
+                    :src="scope.row.courseImageUrl"
+                  ></el-avatar>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column>
+              <template slot-scope="scope">
+                <div>
+                  <b>
+                    {{ scope.row.name }}
+                  </b>
+                </div>
+                <div style="font-size: 12px">
+                  {{ scope.row.authors }}
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column width="110" align="center">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-time" />
+                <span>{{ (scope.row.duration / 60).toFixed() }} phút</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="90" align="center">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-user-solid"></i>
+                {{ scope.row.teachers }}
+              </template>
+            </el-table-column>
+            <el-table-column width="80" align="center">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-user-solid"></i>
+                {{ scope.row.members }}
+              </template>
+            </el-table-column>
+            <el-table-column align="center" width="80">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-notebook-2" />
+                <span>{{ scope.row.lessons }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" width="80">
+              <template slot-scope="scope">
+                <i
+                  class="icon-desc el-icon-s-data"
+                  style="transform: rotate(90deg)"
+                />
+                <span>{{ scope.row.quizzes }}</span>
+              </template> </el-table-column
+            ><el-table-column align="center" width="90">
+              <template slot-scope="scope">
+                {{ scope.row.progress || 0 }} %
+              </template>
+            </el-table-column>
+            <el-table-column class-name="status-col" width="110" align="center">
+              <template slot-scope="scope">
+                <el-switch v-model="scope.row.status" disabled> </el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column align="right">
+              <template slot-scope="scope">
+                <el-button @click="handleEditCourse(scope.row.id)"
+                  >Cài đặt</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </el-col>
     </el-row>
     <el-row :gutter="20">
       <el-col :span="15">
         <h3>Danh sách bài học</h3>
-
-        <div class="grid-content bg-purple"></div>
-        <div class="grid-content bg-purple-light"></div>
+        <div class="grid-content bg-purple-light">
+          <el-table
+            v-loading="listLoading"
+            :data="list"
+            element-loading-text="Loading"
+            fit
+            highlight-current-row
+            :show-header="false"
+          >
+            <el-table-column align="center" width="95">
+              <template slot-scope="scope">
+                <div class="block">
+                  <el-avatar
+                    :size="50"
+                    :src="scope.row.courseImageUrl"
+                  ></el-avatar>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column>
+              <template slot-scope="scope">
+                <div>
+                  <b>
+                    {{ scope.row.name }}
+                  </b>
+                </div>
+                <div style="font-size: 12px">
+                  {{ scope.row.authors }}
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column width="110" align="center">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-time" />
+                <span>{{ (scope.row.duration / 60).toFixed() }} phút</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="90" align="center">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-user-solid"></i>
+                {{ scope.row.teachers }}
+              </template>
+            </el-table-column>
+            <el-table-column width="80" align="center">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-user-solid"></i>
+                {{ scope.row.members }}
+              </template>
+            </el-table-column>
+            <el-table-column align="center" width="80">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-notebook-2" />
+                <span>{{ scope.row.lessons }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" width="80">
+              <template slot-scope="scope">
+                <i
+                  class="icon-desc el-icon-s-data"
+                  style="transform: rotate(90deg)"
+                />
+                <span>{{ scope.row.quizzes }}</span>
+              </template> </el-table-column
+            ><el-table-column align="center" width="90">
+              <template slot-scope="scope">
+                {{ scope.row.progress || 0 }} %
+              </template>
+            </el-table-column>
+            <el-table-column class-name="status-col" width="110" align="center">
+              <template slot-scope="scope">
+                <el-switch v-model="scope.row.status" disabled> </el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column align="right">
+              <template slot-scope="scope">
+                <el-button @click="handleEditCourse(scope.row.id)"
+                  >Cài đặt</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </el-col>
       <el-col :span="9">
         <h3>Danh sách học sinh</h3>
-
-        <div class="grid-content bg-purple"></div>
-        <div class="grid-content bg-purple-light"></div>
+        <div class="grid-content bg-purple-light">
+          <el-table
+            v-loading="listLoading"
+            :data="list"
+            element-loading-text="Loading"
+            fit
+            highlight-current-row
+            :show-header="false"
+          >
+            <el-table-column align="center" width="95">
+              <template slot-scope="scope">
+                <div class="block">
+                  <el-avatar
+                    :size="50"
+                    :src="scope.row.courseImageUrl"
+                  ></el-avatar>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column>
+              <template slot-scope="scope">
+                <div>
+                  <b>
+                    {{ scope.row.name }}
+                  </b>
+                </div>
+                <div style="font-size: 12px">
+                  {{ scope.row.authors }}
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column width="110" align="center">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-time" />
+                <span>{{ (scope.row.duration / 60).toFixed() }} phút</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="90" align="center">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-user-solid"></i>
+                {{ scope.row.teachers }}
+              </template>
+            </el-table-column>
+            <el-table-column width="80" align="center">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-user-solid"></i>
+                {{ scope.row.members }}
+              </template>
+            </el-table-column>
+            <el-table-column align="center" width="80">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-notebook-2" />
+                <span>{{ scope.row.lessons }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" width="80">
+              <template slot-scope="scope">
+                <i
+                  class="icon-desc el-icon-s-data"
+                  style="transform: rotate(90deg)"
+                />
+                <span>{{ scope.row.quizzes }}</span>
+              </template> </el-table-column
+            ><el-table-column align="center" width="90">
+              <template slot-scope="scope">
+                {{ scope.row.progress || 0 }} %
+              </template>
+            </el-table-column>
+            <el-table-column class-name="status-col" width="110" align="center">
+              <template slot-scope="scope">
+                <el-switch v-model="scope.row.status" disabled> </el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column align="right">
+              <template slot-scope="scope">
+                <el-button @click="handleEditCourse(scope.row.id)"
+                  >Cài đặt</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -101,25 +340,24 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { courseAction, CREATE_COURSE } from '@/store/course/action.type'
+import {
+  courseAction,
+  COURSE_NAMESPACE,
+  CREATE_COURSE,
+  GET_COURSE
+} from '@/store/course/action.type'
 import store from '@/store/index'
+import { mapGetters } from 'vuex'
+import { log } from 'node:console'
 
 export default Vue.extend({
   name: 'UpdateCourse',
+  async beforeRouteEnter(to, from, next) {
+    await store.dispatch(courseAction(GET_COURSE), to.params.courseId)
+    next()
+  },
   data() {
     return {
-      form: {
-        name: '123',
-        duration: '120',
-        durationType: 'giây',
-        startDate: '2021-06-07',
-        endDate: '2022-06-07',
-        shortMessage: 'abc',
-        description: '',
-        status: true,
-        minimumAge: '12',
-        picture: []
-      },
       rules: {
         name: [
           { required: true, message: 'Không được để trống', trigger: 'change' }
@@ -133,7 +371,7 @@ export default Vue.extend({
         description: [
           { max: 5000, message: 'Tối đa 5000 kí tự', trigger: 'change' }
         ],
-        minimumAge: [
+        minAge: [
           { required: true, message: 'Không được để trống', trigger: 'change' }
         ],
         maximumAge: [
@@ -152,39 +390,66 @@ export default Vue.extend({
       }
     },
 
-    onSubmit(formName: string) {
-      this.formRef(formName).validate((valid: boolean) => {
-        if (valid) {
-          const courseTobeCreated = {
-            description: this.form.description,
-            duration: this.form.duration,
-            endDate: this.form.endDate,
-            fileId: null,
-            image: '',
-            minAge: this.form.minimumAge,
-            name: this.form.name,
-            shortMessage: this.form.shortMessage,
-            startDate: this.form.startDate,
-            status: this.form.status ? 'ENABLE' : 'DISABLE'
-          }
-          store.dispatch(courseAction(CREATE_COURSE), courseTobeCreated)
-          alert('submit!')
-          return true
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
-    },
+    // onSubmit(formName: string) {
+    //   this.formRef(formName).validate((valid: boolean) => {
+    //     if (valid) {
+    //       const courseTobeCreated = {
+    //         description: this.form.description,
+    //         duration: this.form.duration,
+    //         endDate: this.form.endDate,
+    //         fileId: null,
+    //         image: '',
+    //         minAge: this.form.minAge,
+    //         name: this.form.name,
+    //         shortMessage: this.form.shortMessage,
+    //         startDate: this.form.startDate,
+    //         status: this.form.status ? 'ENABLE' : 'DISABLE'
+    //       }
+    //       store.dispatch(courseAction(CREATE_COURSE), courseTobeCreated)
+    //       alert('submit!')
+    //       return true
+    //     } else {
+    //       console.log('error submit!!')
+    //       return false
+    //     }
+    //   })
+    // },
 
     onCancel() {
       this.$router.push({
         path: '/course/index'
       })
-    },
+    }
 
-    pictureUrl() {
-      return this.form.picture[0] ? this.form.picture[0] : ''
+    // pictureUrl() {
+    //   return this.form.picture[0] ? this.form.picture[0] : ''
+    // }
+  },
+
+  computed: {
+    ...mapGetters(COURSE_NAMESPACE, ['course']),
+    form() {
+      if (this.course && this.course.data) {
+        const data = this.course.data
+        console.log(data)
+
+        return {
+          ...data,
+          startDate: data.startDate
+            .split('-')
+            .reverse()
+            .join('-'),
+          endDate: data.endDate
+            .split('-')
+            .reverse()
+            .join('-'),
+          durationType: 'giây'
+        }
+      }
+      return {}
+    },
+    list() {
+      return this.course.data.lessons
     }
   }
 })

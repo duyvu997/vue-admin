@@ -96,6 +96,7 @@ export default Vue.extend({
         callback()
       }
     },
+
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -112,14 +113,7 @@ export default Vue.extend({
         if (valid) {
           this.loading = true
           await store.dispatch(userAction(LOGIN), this.loginForm)
-          this.$router.push({
-            path: this.redirect || '/',
-            query: this.otherQuery
-          })
-          // Just to simulate the time of the request
-          setTimeout(() => {
-            this.loading = false
-          }, 0.5 * 1000)
+          this.$router.push({ path: this.redirect || '/' }).catch(() => {})
         } else {
           return false
         }

@@ -10,15 +10,20 @@ import courseApiClient from '@/api/course'
 
 interface ICourseState {
   courses: object[]
+  course: object
 }
 
 const state: ICourseState = {
-  courses: []
+  courses: [],
+  course: {}
 }
 
 const getters = {
   courses(state: ICourseState) {
     return state.courses
+  },
+  course(state: ICourseState) {
+    return state.course
   }
 }
 
@@ -45,6 +50,9 @@ const actions = {
 const mutations = {
   [SET_COURSES](state: ICourseState, courses: any) {
     state.courses = courses
+  },
+  [SET_COURSE](state: ICourseState, course: any) {
+    state.course = course
   }
 }
 

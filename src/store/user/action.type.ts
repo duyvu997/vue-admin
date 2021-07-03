@@ -2,6 +2,7 @@ import { getNamespace } from '@/utils/store-helper'
 
 export const USER_NAMESPACE = 'UserModule'
 export const LOGIN = 'login'
+export const LOGOUT = 'logout'
 export const SET_TOKEN = 'setToken'
 export const RESET_TOKEN = 'resetToken'
 export const SET_ROLES = 'setRoles'

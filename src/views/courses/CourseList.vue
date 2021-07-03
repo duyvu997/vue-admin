@@ -4,8 +4,6 @@
       <div>
         <el-radio-group v-model="listQuery.filter.status">
           <el-radio-button label="Tất cả">Tất cả</el-radio-button>
-          <el-radio-button label="Đang mở">Đang mở</el-radio-button>
-          <el-radio-button label="Đã đóng">Đã đóng</el-radio-button>
         </el-radio-group>
       </div>
       <div>
