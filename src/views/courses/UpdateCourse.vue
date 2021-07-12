@@ -77,7 +77,6 @@
       </el-col>
       <el-col :span="9">
         <h3>Danh sách giáo viên</h3>
-
         <div class="grid-content bg-purple"></div>
         <div class="grid-content bg-purple-light">
           <el-table
@@ -123,8 +122,8 @@
               </template>
             </el-table-column>
             <el-table-column align="right">
-              <template>
-                <el-button>Xóa</el-button>
+              <template slot-scope="scope">
+                <el-button v-if="scope.row.status !== 'OWNER'">Xóa</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -237,6 +236,7 @@
           <el-pagination
             layout="prev, pager, next"
             :total="this.studentsOfCourse.length"
+            :page-size="studentPageSize"
             @current-change="setPage"
           >
           </el-pagination>

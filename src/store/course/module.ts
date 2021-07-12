@@ -83,9 +83,9 @@ const actions = {
     { commit }: { commit: Commit },
     courseId: string
   ) {
-    const course = await courseApiClient.getCourseTeachersById(courseId)
-    commit(SET_COURSE, course)
-    return course
+    const { data = [] } = await courseApiClient.getCourseTeachersById(courseId)
+    commit(SET_TEACHERS, data)
+    return data
   },
 
   async [GET_COURSE_STUDENTS](
