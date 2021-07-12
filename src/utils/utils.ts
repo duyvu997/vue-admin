@@ -1,8 +1,10 @@
-const reverseDay = (date: string) => {
+const reverseDay = (date: string | undefined) => {
   return date
-    .split('-')
-    .reverse()
-    .join('-')
+    ? date
+      .split('-')
+      .reverse()
+      .join('-')
+    : undefined
 }
 type obj = { [x: string]: any }
 

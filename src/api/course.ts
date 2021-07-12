@@ -18,6 +18,18 @@ const getCourseById = (courseId: string) =>
     url: `/courses-management/courses/${courseId}`,
     method: 'get'
   })
+
+const getCourseTeachersById = (courseId: string) =>
+  request({
+    url: `/courses-management/courses/${courseId}/teachers`,
+    method: 'get'
+  })
+
+const getCourseStudentsById = (courseId: string) =>
+  request({
+    url: `/courses-management/courses/${courseId}/children`,
+    method: 'get'
+  })
   
 const updateCourseById = (courseId: string, courseTobeUpdated: any) =>
   request({
@@ -30,5 +42,7 @@ export default {
   getCourses,
   createCourse,
   getCourseById,
+  getCourseTeachersById,
+  getCourseStudentsById,
   updateCourseById
 }

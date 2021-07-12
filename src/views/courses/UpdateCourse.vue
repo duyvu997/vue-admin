@@ -77,12 +77,10 @@
       </el-col>
       <el-col :span="9">
         <h3>Danh sách giáo viên</h3>
-
         <div class="grid-content bg-purple"></div>
         <div class="grid-content bg-purple-light">
           <el-table
-            v-loading="listLoading"
-            :data="teachers"
+            :data="teachersOfCourse"
             element-loading-text="Loading"
             fit
             highlight-current-row
@@ -91,10 +89,7 @@
             <el-table-column align="center" width="95">
               <template slot-scope="scope">
                 <div class="block">
-                  <el-avatar
-                    :size="50"
-                    :src="scope.row.avatarUrl"
-                  ></el-avatar>
+                  <el-avatar :size="50" :src="scope.row.avatarUrl"></el-avatar>
                 </div>
               </template>
             </el-table-column>
@@ -113,7 +108,10 @@
 
             <el-table-column align="center" width="80">
               <template slot-scope="scope">
-                <i v-if="scope.row.status === 'OWNER'" class="el-icon-star-on" />
+                <i
+                  v-if="scope.row.status === 'OWNER'"
+                  class="el-icon-star-on"
+                />
                 <i v-else class="el-icon-s-tools" />
               </template>
             </el-table-column>
@@ -124,8 +122,8 @@
               </template>
             </el-table-column>
             <el-table-column align="right">
-              <template>
-                <el-button>Xóa</el-button>
+              <template slot-scope="scope">
+                <el-button v-if="scope.row.status !== 'OWNER'">Xóa</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -137,7 +135,7 @@
         <h3>Danh sách bài học</h3>
         <div class="grid-content bg-purple-light">
           <el-table
-            :data="list"
+            :data="lessonsOfCourse"
             element-loading-text="Loading"
             fit
             highlight-current-row
@@ -194,7 +192,7 @@
         <h3>Danh sách học sinh</h3>
         <div class="grid-content bg-purple-light">
           <el-table
-            :data="list"
+            :data="pagedTableDataOfStudent"
             element-loading-text="Loading"
             fit
             highlight-current-row
@@ -222,46 +220,9 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column width="110" align="center">
+            <el-table-column align="center" width="90">
               <template slot-scope="scope">
-                <i class="icon-desc el-icon-time" />
-                <span>{{ (scope.row.duration / 60).toFixed() }} phút</span>
-              </template>
-            </el-table-column>
-            <el-table-column width="90" align="center">
-              <template slot-scope="scope">
-                <i class="icon-desc el-icon-user-solid"></i>
-                {{ scope.row.teachers }}
-              </template>
-            </el-table-column>
-            <el-table-column width="80" align="center">
-              <template slot-scope="scope">
-                <i class="icon-desc el-icon-user-solid"></i>
-                {{ scope.row.members }}
-              </template>
-            </el-table-column>
-            <el-table-column align="center" width="80">
-              <template slot-scope="scope">
-                <i class="icon-desc el-icon-notebook-2" />
-                <span>{{ scope.row.lessons }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column align="center" width="80">
-              <template slot-scope="scope">
-                <i
-                  class="icon-desc el-icon-s-data"
-                  style="transform: rotate(90deg)"
-                />
-                <span>{{ scope.row.quizzes }}</span>
-              </template> </el-table-column
-            ><el-table-column align="center" width="90">
-              <template slot-scope="scope">
-                {{ scope.row.progress || 0 }} %
-              </template>
-            </el-table-column>
-            <el-table-column class-name="status-col" width="110" align="center">
-              <template slot-scope="scope">
-                <el-switch v-model="scope.row.status" disabled> </el-switch>
+                {{ scope.row.userCourseProcess || 0 }} %
               </template>
             </el-table-column>
             <el-table-column align="right">
@@ -272,6 +233,13 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-pagination
+            layout="prev, pager, next"
+            :total="this.studentsOfCourse.length"
+            :page-size="studentPageSize"
+            @current-change="setPage"
+          >
+          </el-pagination>
         </div>
       </el-col>
     </el-row>
@@ -284,6 +252,8 @@ import {
   courseAction,
   COURSE_NAMESPACE,
   GET_COURSE,
+  GET_COURSE_STUDENTS,
+  GET_COURSE_TEACHERS,
   UPDATE_COURSE
 } from '@/store/course/action.type'
 import store from '@/store/index'
@@ -293,7 +263,15 @@ import { deference, reverseDay } from '@/utils/utils'
 export default Vue.extend({
   name: 'UpdateCourse',
   async beforeRouteEnter(to, from, next) {
-    await store.dispatch(courseAction(GET_COURSE), to.params.courseId)
+    const promises = []
+    promises.push(store.dispatch(courseAction(GET_COURSE), to.params.courseId))
+    promises.push(
+      store.dispatch(courseAction(GET_COURSE_TEACHERS), to.params.courseId)
+    )
+    promises.push(
+      store.dispatch(courseAction(GET_COURSE_STUDENTS), to.params.courseId)
+    )
+    await Promise.all(promises)
     next()
   },
   data() {
@@ -311,26 +289,6 @@ export default Vue.extend({
         maximumAge: '',
         picture: []
       },
-      teachers: [
-        {
-          id: 1.0,
-          avatarUrl:
-            'https://lh3.googleusercontent.com/-nZVE9A4klypZX8uIp34BsCEpy4k7aJ6TfZvpeHZZHcKov_-navdndPYHT3ikrSO1e_ebQdCXV9NLhhCyok7U2qc_3raKFw0lGBu3Ut15Fn-KEwWgKFdgyFyiW8WjPxLhbw7P3ATRIMRUJxYyH6TEDuIQj7rsItXyrvsU1aevwfjtWPA2xbtB9qymA0nhp7fnhIfXqZZ6Apd4DzzsjBwBMsnoc7EG2a4s1l9u2iDtDv-qHHdrQfQY3GhKt8gOVwZlTYoTUeeCm5TopOgO3QhKN7hB-ZWaaX0UL_igOaq3pYx139g0Newa-NQpu-p5-kp7VS2iUFOT4dmmsnmWLplNKrrZU2EKTh9ed6ae7JGFn0VpWux0G9dD29BBvVRVYsCx083FauIHpwpo0xkHaCqW7P56GFn_wGPu-vsV698438rraWPmkMGPk9hj6OoPYJMwe5dEA6Aq7Bp6jHE97d_joNlrIC4BzFfQZJ23JWRbHMOnAe-nPDe2PUQl6cpKZrUU5GjXdFpmAuwWDSG77OwAXA8SHRvqepimPorwe4MGy33lJipkyFyw6GnkW3lo7Wc0_N_F0dS1AhvhFNEj9A1I6nSH5YHA2U8zL3hXmhgcTkBpbUrUmSVXipeiVpOrsEpF-TqoUdxD8ZTAq60VgacDpNti5kDEnHQ9SCjDXMb1EBvdkpNzsjZ8t4=w500-h750-no?authuser=2',
-          fileId: null,
-          username: 'trungb',
-          name: 'Trung B',
-          status: 'OWNER'
-        },
-        {
-          id: 1036.0,
-          avatarUrl:
-            'https://photographer.com.vn/wp-content/uploads/2020/08/1596889696_Anh-avatar-dep-va-doc-dao-lam-hinh-dai-dien.jpg',
-          fileId: null,
-          username: 'trungb01',
-          name: 'Trung Bui',
-          status: 'PARTNER'
-        }
-      ],
       rules: {
         name: [
           { required: true, message: 'Không được để trống', trigger: 'change' }
@@ -350,7 +308,9 @@ export default Vue.extend({
         maximumAge: [
           { required: true, message: 'Không được để trống', trigger: 'change' }
         ]
-      }
+      },
+      studentPage: 1,
+      studentPageSize: 5
     }
   },
 
@@ -397,6 +357,10 @@ export default Vue.extend({
           return false
         }
       })
+    },
+
+    setPage(val: any) {
+      this.studentPage = val
     }
   },
 
@@ -405,9 +369,21 @@ export default Vue.extend({
   },
 
   computed: {
-    ...mapGetters(COURSE_NAMESPACE, ['course']),
-    list(): string {
+    ...mapGetters(COURSE_NAMESPACE, [
+      'course',
+      'studentsOfCourse',
+      'teachersOfCourse'
+    ]),
+    lessonsOfCourse(): string {
       return this.course.data.lessons
+    },
+    pagedTableDataOfStudent(): [] {
+      return this.studentsOfCourse.length
+        ? this.studentsOfCourse.slice(
+          this.studentPageSize * this.studentPage - this.studentPageSize,
+          this.studentPageSize * this.studentPage
+        )
+        : []
     }
   }
 })
@@ -454,10 +430,16 @@ export default Vue.extend({
 .grid-content {
   border-radius: 4px;
   min-height: 36px;
+  display: flex;
+  flex-direction: column;
 }
 
 .row-bg {
   padding: 10px 0;
   background-color: #f9fafc;
+}
+
+.el-pagination {
+  align-self: center;
 }
 </style>

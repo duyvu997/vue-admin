@@ -3,6 +3,7 @@ import {
   GET_USER_INFO,
   LOGIN,
   LOGOUT,
+  RESET_ERROR,
   RESET_TOKEN,
   SET_AVATAR,
   SET_ERROR,
@@ -19,7 +20,8 @@ interface IUserState {
   name: string
   avatar: string
   introduction: string
-  roles: string[]
+  roles: string[],
+  error: any
 }
 
 const state: IUserState = {
@@ -27,7 +29,8 @@ const state: IUserState = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  error: ''
 }
 const getters = {
   token(state: IUserState) {
@@ -116,6 +119,10 @@ const mutations = {
 
   [SET_ROLES](state: IUserState, roles: string[]) {
     state.roles = roles
+  },
+
+  [RESET_ERROR](state: IUserState) {
+    state.error = ''
   }
 }
 
