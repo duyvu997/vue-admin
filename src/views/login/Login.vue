@@ -10,7 +10,7 @@
     >
       <div class="title-container">
         <h3 class="title">
-          Login Form
+          Đăng Nhập
         </h3>
       </div>
 
@@ -55,7 +55,7 @@
         style="width:100%; margin-bottom:30px;"
         @click.native.prevent="handleLogin"
       >
-        Sign in
+        Đăng nhập
       </el-button>
     </el-form>
   </div>
@@ -66,7 +66,8 @@ import Vue from 'vue'
 import { Route } from 'vue-router'
 import { Dictionary } from 'vue-router/types/router'
 import { Form as ElForm, Input } from 'element-ui'
-import { UserModule } from '@/store/modules/user'
+import store from '@/store/index'
+import { LOGIN, userAction } from '@/store/user/action.type'
 
 export default Vue.extend({
   name: 'Login',
@@ -95,6 +96,7 @@ export default Vue.extend({
         callback()
       }
     },
+
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -107,19 +109,11 @@ export default Vue.extend({
     },
 
     handleLogin() {
-      ;(this.$refs.loginForm as ElForm).validate(async (valid: boolean) => {
+      (this.$refs.loginForm as ElForm).validate(async (valid: boolean) => {
         if (valid) {
           this.loading = true
-          const a = await UserModule.Login(this.loginForm)
-          console.log(a)
-          this.$router.push({
-            path: this.redirect || '/',
-            query: this.otherQuery
-          })
-          // Just to simulate the time of the request
-          setTimeout(() => {
-            this.loading = false
-          }, 0.5 * 1000)
+          await store.dispatch(userAction(LOGIN), this.loginForm)
+          this.$router.push({ path: this.redirect || '/' }).catch(() => {})
         } else {
           return false
         }

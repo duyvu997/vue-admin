@@ -4,7 +4,7 @@
       <el-col :span="15">
         <h3>Thông tin cơ bản</h3>
         <el-form ref="form" :model="form" :rules="rules" label-width="160px">
-          <el-form-item label="Tên khoá học" prop="name">
+          <el-form-item label="Tên khoá học">
             <el-input v-model="form.name" />
           </el-form-item>
           <el-form-item label="Thời lượng khoá học" prop="duration">
@@ -47,10 +47,10 @@
             <el-input v-model="form.description" type="textarea" />
           </el-form-item>
           <el-form-item label="Trạng thái" prop="status">
-            <el-switch v-model="form.status" />
+            <el-switch v-model="form.status" type="switch" />
           </el-form-item>
-          <el-form-item label="Độ tuổi tối thiểu" prop="minimumAge">
-            <el-input style="width: 49.4%;" v-model="form.minimumAge" />
+          <el-form-item label="Độ tuổi tối thiểu" prop="minAge">
+            <el-input style="width: 49.4%;" v-model="form.minAge" />
           </el-form-item>
           <el-form-item label="Hình ảnh" prop="picture">
             <el-upload
@@ -79,21 +79,200 @@
         <h3>Danh sách giáo viên</h3>
 
         <div class="grid-content bg-purple"></div>
-        <div class="grid-content bg-purple-light"></div>
+        <div class="grid-content bg-purple-light">
+          <el-table
+            v-loading="listLoading"
+            :data="teachers"
+            element-loading-text="Loading"
+            fit
+            highlight-current-row
+            :show-header="false"
+          >
+            <el-table-column align="center" width="95">
+              <template slot-scope="scope">
+                <div class="block">
+                  <el-avatar
+                    :size="50"
+                    :src="scope.row.avatarUrl"
+                  ></el-avatar>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column>
+              <template slot-scope="scope">
+                <div>
+                  <b>
+                    {{ scope.row.name }}
+                  </b>
+                </div>
+                <div style="font-size: 12px">
+                  {{ scope.row.authors }}
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column align="center" width="80">
+              <template slot-scope="scope">
+                <i v-if="scope.row.status === 'OWNER'" class="el-icon-star-on" />
+                <i v-else class="el-icon-s-tools" />
+              </template>
+            </el-table-column>
+
+            <el-table-column align="right">
+              <template>
+                <el-button>Cài đặt</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column align="right">
+              <template>
+                <el-button>Xóa</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </el-col>
     </el-row>
     <el-row :gutter="20">
       <el-col :span="15">
         <h3>Danh sách bài học</h3>
+        <div class="grid-content bg-purple-light">
+          <el-table
+            :data="list"
+            element-loading-text="Loading"
+            fit
+            highlight-current-row
+            :show-header="false"
+          >
+            <el-table-column align="center" width="95">
+              <template slot-scope="scope">
+                <div class="block">
+                  <el-avatar
+                    :size="50"
+                    :src="scope.row.lessonImageUrl"
+                  ></el-avatar>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column>
+              <template slot-scope="scope">
+                <div>
+                  <b>
+                    {{ scope.row.name }}
+                  </b>
+                </div>
+                <div style="font-size: 12px">
+                  {{ scope.row.authors }}
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" width="80">
+              <template slot-scope="scope">
+                <i
+                  class="icon-desc el-icon-s-data"
+                  style="transform: rotate(90deg)"
+                />
+                <span>{{ scope.row.numberOfQuizzes }}</span>
+              </template>
+            </el-table-column>
 
-        <div class="grid-content bg-purple"></div>
-        <div class="grid-content bg-purple-light"></div>
+            <el-table-column class-name="status-col" width="110" align="center">
+              <template slot-scope="scope">
+                <el-switch v-model="scope.row.status" disabled> </el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column align="right">
+              <template>
+                <el-button>
+                  Cài đặt
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </el-col>
       <el-col :span="9">
         <h3>Danh sách học sinh</h3>
-
-        <div class="grid-content bg-purple"></div>
-        <div class="grid-content bg-purple-light"></div>
+        <div class="grid-content bg-purple-light">
+          <el-table
+            :data="list"
+            element-loading-text="Loading"
+            fit
+            highlight-current-row
+            :show-header="false"
+          >
+            <el-table-column align="center" width="95">
+              <template slot-scope="scope">
+                <div class="block">
+                  <el-avatar
+                    :size="50"
+                    :src="scope.row.courseImageUrl"
+                  ></el-avatar>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column>
+              <template slot-scope="scope">
+                <div>
+                  <b>
+                    {{ scope.row.name }}
+                  </b>
+                </div>
+                <div style="font-size: 12px">
+                  {{ scope.row.authors }}
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column width="110" align="center">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-time" />
+                <span>{{ (scope.row.duration / 60).toFixed() }} phút</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="90" align="center">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-user-solid"></i>
+                {{ scope.row.teachers }}
+              </template>
+            </el-table-column>
+            <el-table-column width="80" align="center">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-user-solid"></i>
+                {{ scope.row.members }}
+              </template>
+            </el-table-column>
+            <el-table-column align="center" width="80">
+              <template slot-scope="scope">
+                <i class="icon-desc el-icon-notebook-2" />
+                <span>{{ scope.row.lessons }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" width="80">
+              <template slot-scope="scope">
+                <i
+                  class="icon-desc el-icon-s-data"
+                  style="transform: rotate(90deg)"
+                />
+                <span>{{ scope.row.quizzes }}</span>
+              </template> </el-table-column
+            ><el-table-column align="center" width="90">
+              <template slot-scope="scope">
+                {{ scope.row.progress || 0 }} %
+              </template>
+            </el-table-column>
+            <el-table-column class-name="status-col" width="110" align="center">
+              <template slot-scope="scope">
+                <el-switch v-model="scope.row.status" disabled> </el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column align="right">
+              <template slot-scope="scope">
+                <el-button @click="handleEditCourse(scope.row.id)"
+                  >Cài đặt</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -101,24 +280,57 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CourseModule } from '@/store/modules/course'
+import {
+  courseAction,
+  COURSE_NAMESPACE,
+  GET_COURSE,
+  UPDATE_COURSE
+} from '@/store/course/action.type'
+import store from '@/store/index'
+import { mapGetters } from 'vuex'
+import { deference, reverseDay } from '@/utils/utils'
 
 export default Vue.extend({
   name: 'UpdateCourse',
+  async beforeRouteEnter(to, from, next) {
+    await store.dispatch(courseAction(GET_COURSE), to.params.courseId)
+    next()
+  },
   data() {
     return {
       form: {
-        name: '123',
-        duration: '120',
+        id: '',
+        name: '',
+        duration: '',
         durationType: 'giây',
-        startDate: '2021-06-07',
-        endDate: '2022-06-07',
-        shortMessage: 'abc',
+        date: '',
+        shortMessage: '',
         description: '',
-        status: true,
-        minimumAge: '12',
+        status: false,
+        minimumAge: '',
+        maximumAge: '',
         picture: []
       },
+      teachers: [
+        {
+          id: 1.0,
+          avatarUrl:
+            'https://lh3.googleusercontent.com/-nZVE9A4klypZX8uIp34BsCEpy4k7aJ6TfZvpeHZZHcKov_-navdndPYHT3ikrSO1e_ebQdCXV9NLhhCyok7U2qc_3raKFw0lGBu3Ut15Fn-KEwWgKFdgyFyiW8WjPxLhbw7P3ATRIMRUJxYyH6TEDuIQj7rsItXyrvsU1aevwfjtWPA2xbtB9qymA0nhp7fnhIfXqZZ6Apd4DzzsjBwBMsnoc7EG2a4s1l9u2iDtDv-qHHdrQfQY3GhKt8gOVwZlTYoTUeeCm5TopOgO3QhKN7hB-ZWaaX0UL_igOaq3pYx139g0Newa-NQpu-p5-kp7VS2iUFOT4dmmsnmWLplNKrrZU2EKTh9ed6ae7JGFn0VpWux0G9dD29BBvVRVYsCx083FauIHpwpo0xkHaCqW7P56GFn_wGPu-vsV698438rraWPmkMGPk9hj6OoPYJMwe5dEA6Aq7Bp6jHE97d_joNlrIC4BzFfQZJ23JWRbHMOnAe-nPDe2PUQl6cpKZrUU5GjXdFpmAuwWDSG77OwAXA8SHRvqepimPorwe4MGy33lJipkyFyw6GnkW3lo7Wc0_N_F0dS1AhvhFNEj9A1I6nSH5YHA2U8zL3hXmhgcTkBpbUrUmSVXipeiVpOrsEpF-TqoUdxD8ZTAq60VgacDpNti5kDEnHQ9SCjDXMb1EBvdkpNzsjZ8t4=w500-h750-no?authuser=2',
+          fileId: null,
+          username: 'trungb',
+          name: 'Trung B',
+          status: 'OWNER'
+        },
+        {
+          id: 1036.0,
+          avatarUrl:
+            'https://photographer.com.vn/wp-content/uploads/2020/08/1596889696_Anh-avatar-dep-va-doc-dao-lam-hinh-dai-dien.jpg',
+          fileId: null,
+          username: 'trungb01',
+          name: 'Trung Bui',
+          status: 'PARTNER'
+        }
+      ],
       rules: {
         name: [
           { required: true, message: 'Không được để trống', trigger: 'change' }
@@ -132,7 +344,7 @@ export default Vue.extend({
         description: [
           { max: 5000, message: 'Tối đa 5000 kí tự', trigger: 'change' }
         ],
-        minimumAge: [
+        minAge: [
           { required: true, message: 'Không được để trống', trigger: 'change' }
         ],
         maximumAge: [
@@ -151,22 +363,33 @@ export default Vue.extend({
       }
     },
 
+    onCancel() {
+      this.$router.push({
+        path: '/courses/index'
+      })
+    },
+
+    getInitData() {
+      return {
+        ...this.course.data,
+        startDate: reverseDay(this.course.data.startDate),
+        endDate: reverseDay(this.course.data.endDate),
+        durationType: 'giây',
+        status: this.course.data.status === 'ENABLE'
+      }
+    },
+
     onSubmit(formName: string) {
       this.formRef(formName).validate((valid: boolean) => {
         if (valid) {
-          const courseTobeCreated = {
-            description: this.form.description,
-            duration: this.form.duration,
-            endDate: this.form.endDate,
-            fileId: null,
-            image: '',
-            minAge: this.form.minimumAge,
-            name: this.form.name,
-            shortMessage: this.form.shortMessage,
-            startDate: this.form.startDate,
-            status: this.form.status ? 'ENABLE' : 'DISABLE'
-          }
-          CourseModule.createCourse(courseTobeCreated)
+          const courseTobeUpdated = deference(this.getInitData(), this.form, [
+            'startDate',
+            'endDate'
+          ])
+          store.dispatch(courseAction(UPDATE_COURSE), {
+            courseId: this.form.id,
+            courseTobeUpdated
+          })
           alert('submit!')
           return true
         } else {
@@ -174,16 +397,17 @@ export default Vue.extend({
           return false
         }
       })
-    },
+    }
+  },
 
-    onCancel() {
-      this.$router.push({
-        path: '/course/index'
-      })
-    },
+  mounted() {
+    this.form = this.getInitData()
+  },
 
-    pictureUrl() {
-      return this.form.picture[0] ? this.form.picture[0] : ''
+  computed: {
+    ...mapGetters(COURSE_NAMESPACE, ['course']),
+    list(): string {
+      return this.course.data.lessons
     }
   }
 })

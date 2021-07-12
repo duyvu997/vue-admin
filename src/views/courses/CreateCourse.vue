@@ -70,90 +70,90 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { CourseModule } from '@/store/modules/course'
+import Vue from 'vue'
+import store from '@/store/index'
+import { courseAction, CREATE_COURSE } from '@/store/course/action.type'
 
-@Component({
-  name: 'CreateCourse'
-})
-export default class extends Vue {
-  private form = {
-    name: '',
-    duration: '',
-    durationType: 'giây',
-    date: '',
-    shortMessage: '',
-    description: '',
-    status: false,
-    minimumAge: '',
-    maximumAge: '',
-    picture: []
-  }
-
-  private rules = {
-    name: [
-      { required: true, message: 'Không được để trống', trigger: 'change' }
-    ],
-    duration: [
-      { required: true, message: 'Không được để trống', trigger: 'change' }
-    ],
-    date: [
-      { required: true, message: 'Không được để trống', trigger: 'change' }
-    ],
-    description: [
-      { max: 5000, message: 'Tối đa 5000 kí tự', trigger: 'change' }
-    ],
-    minimumAge: [
-      { required: true, message: 'Không được để trống', trigger: 'change' }
-    ],
-    maximumAge: [
-      { required: true, message: 'Không được để trống', trigger: 'change' }
-    ]
-  }
-
-  private formRef(
-    formName: string
-  ): Vue & { validate: (func: (valid: boolean) => boolean) => void } {
-    return this.$refs[formName] as Vue & {
-      validate: (func: (valid: boolean) => boolean) => void
+export default Vue.extend({
+  name: 'CreateCourse',
+  data() {
+    return {
+      form: {
+        name: '',
+        duration: '',
+        durationType: 'giây',
+        date: '',
+        shortMessage: '',
+        description: '',
+        status: false,
+        minimumAge: '',
+        maximumAge: '',
+        picture: []
+      },
+      rules: {
+        name: [
+          { required: true, message: 'Không được để trống', trigger: 'change' }
+        ],
+        duration: [
+          { required: true, message: 'Không được để trống', trigger: 'change' }
+        ],
+        date: [
+          { required: true, message: 'Không được để trống', trigger: 'change' }
+        ],
+        description: [
+          { max: 5000, message: 'Tối đa 5000 kí tự', trigger: 'change' }
+        ],
+        minimumAge: [
+          { required: true, message: 'Không được để trống', trigger: 'change' }
+        ],
+        maximumAge: [
+          { required: true, message: 'Không được để trống', trigger: 'change' }
+        ]
+      }
+    }
+  },
+  methods: {
+    /* istanbul ignore next */
+    formRef(
+      formName: string
+    ): Vue & { validate: (func: (valid: boolean) => boolean) => void } {
+      return this.$refs[formName] as Vue & {
+        validate: (func: (valid: boolean) => boolean) => void
+      }
+    },
+    /* istanbul ignore next */
+    onSubmit(formName: string) {
+      this.formRef(formName).validate((valid: boolean) => {
+        if (valid) {
+          const courseTobeCreated = {
+            description: this.form.description,
+            duration: this.form.duration,
+            endDate: '',
+            fileId: null,
+            image: '',
+            minAge: this.form.minimumAge,
+            name: this.form.name,
+            shortMessage: this.form.shortMessage,
+            startDate: this.form.date,
+            status: this.form.status ? 'ACTIVE' : 'DEACTIVE'
+          }
+          store.dispatch(courseAction(CREATE_COURSE), courseTobeCreated)
+          alert('submit!')
+          return true
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    /* istanbul ignore next */
+    onCancel() {
+      this.$router.push({
+        path: '/courses/index'
+      })
     }
   }
-
-  private onSubmit(formName: string) {
-    this.formRef(formName).validate((valid: boolean) => {
-      if (valid) {
-        const courseTobeCreated = {
-          description: this.form.description,
-          duration: this.form.duration,
-          endDate: '',
-          fileId: null,
-          image: '',
-          minAge: this.form.minimumAge,
-          name: this.form.name,
-          shortMessage: this.form.shortMessage,
-          startDate: this.form.date,
-          status: this.form.status ? 'ACTIVE' : 'DEACTIVE'
-        }
-        CourseModule.createCourse(courseTobeCreated)
-        alert('submit!')
-        return true
-      } else {
-        console.log('error submit!!')
-        return false
-      }
-    })
-  }
-
-  private onCancel() {
-    this.$router.push({
-      path: '/courses/index'
-    })
-  }
-
-  get pictureUrl() {
-    return this.form.picture[0] ? this.form.picture[0] : ''
-  }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -18,9 +18,17 @@ const getCourseById = (courseId: string) =>
     url: `/courses-management/courses/${courseId}`,
     method: 'get'
   })
+  
+const updateCourseById = (courseId: string, courseTobeUpdated: any) =>
+  request({
+    url: `/courses-management/courses/${courseId}`,
+    method: 'put',
+    data: courseTobeUpdated 
+  })
 
 export default {
   getCourses,
   createCourse,
-  getCourseById
+  getCourseById,
+  updateCourseById
 }

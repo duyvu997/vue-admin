@@ -14,6 +14,72 @@ Vue.use(Router)
   }
 */
 
+const routes = [
+  {
+    path: '/login',
+    component: () => import(/* webpackChunkName: "login" */ '@/views/login/Login.vue'),
+    meta: { 
+      title: 'Orange Juice Admin', 
+      hidden: true 
+    }
+  },
+  {
+    path: '/404',
+    component: () => import(/* webpackChunkName: "404" */ '@/views/404.vue'),
+    meta: { hidden: true }
+  },
+  {
+    path: '/',
+    component: Layout,
+    redirect: 'dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/Dashboard.vue'),
+        meta: {
+          title: 'Trang chủ',
+          icon: 'dashboard'
+        }
+      }
+    ]
+  },
+  {
+    path: '/courses',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/courses/CourseList.vue'),
+        meta: {
+          title: 'Khóa học',
+          icon: 'table'
+        }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/courses/CreateCourse.vue'),
+        meta: {
+          title: 'Create Course',
+          hidden: true
+        }
+      },
+      {
+        path: 'edit/:courseId',
+        component: () => import('@/views/courses/UpdateCourse.vue'),
+        meta: {
+          title: 'Update Course',
+          hidden: true
+        }
+      }
+    ]
+  },
+  {
+    path: '*',
+    redirect: '/404',
+    meta: { hidden: true }
+  }
+]
+
 export default new Router({
   // mode: 'history',  // Enable this if you need.
   scrollBehavior: (to, from, savedPosition) => {
@@ -24,172 +90,5 @@ export default new Router({
     }
   },
   base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/login',
-      component: () => import(/* webpackChunkName: "login" */ '@/views/login/Login.vue'),
-      meta: { hidden: true }
-    },
-    {
-      path: '/404',
-      component: () => import(/* webpackChunkName: "404" */ '@/views/404.vue'),
-      meta: { hidden: true }
-    },
-    {
-      path: '/',
-      component: Layout,
-      redirect: '/dashboard',
-      children: [
-        {
-          path: 'dashboard',
-          component: () => import(/* webpackChunkName: "dashboard" */ '@/views/dashboard/Dashboard.vue'),
-          meta: {
-            title: 'Dashboard',
-            icon: 'dashboard'
-          }
-        }
-      ]
-    },
-    {
-      path: '/courses',
-      component: Layout,
-      children: [
-        {
-          path: 'index',
-          component: () => import(/* webpackChunkName: "dashboard" */ '@/views/courses/Courses.vue'),
-          meta: {
-            title: 'Courses',
-            icon: 'table'
-          }
-        },
-        {
-          path: 'create',
-          component: () => import(/* webpackChunkName: "dashboard" */ '@/views/courses/CreateCourse.vue'),
-          meta: {
-            title: 'Create Course',
-            hidden: true
-          }
-        },
-        {
-          path: 'edit/:courseId',
-          component: () => import(/* webpackChunkName: "dashboard" */ '@/views/courses/UpdateCourse.vue'),
-          meta: {
-            title: 'Update Course',
-            hidden: true
-          }
-        }
-      ]
-    },
-    // {
-    //   path: '/example',
-    //   component: Layout,
-    //   redirect: '/example/tree',
-    //   meta: {
-    //     title: 'Example',
-    //     icon: 'example'
-    //   },
-    //   children: [
-    //     {
-    //       path: 'tree',
-    //       component: () => import(/* webpackChunkName: "tree" */ '@/views/tree/index.vue'),
-    //       meta: {
-    //         title: 'Tree',
-    //         icon: 'tree'
-    //       }
-    //     },
-    //     {
-    //       path: 'table',
-    //       component: () => import(/* webpackChunkName: "table" */ '@/views/table/index.vue'),
-    //       meta: {
-    //         title: 'Table',
-    //         icon: 'table'
-    //       }
-    //     }
-    //   ]
-    // },
-    // {
-    //   path: '/form',
-    //   component: Layout,
-    //   children: [
-    //     {
-    //       path: 'index',
-    //       component: () => import(/* webpackChunkName: "form" */ '@/views/form/index.vue'),
-    //       meta: {
-    //         title: 'Form',
-    //         icon: 'form'
-    //       }
-    //     }
-    //   ]
-    // },
-    // {
-    //   path: '/nested',
-    //   component: Layout,
-    //   redirect: '/nested/menu1',
-    //   meta: {
-    //     title: 'Nested',
-    //     icon: 'nested'
-    //   },
-    //   children: [
-    //     {
-    //       path: 'menu1',
-    //       component: () => import(/* webpackChunkName: "menu1" */ '@/views/nested/menu1/index.vue'),
-    //       redirect: '/nested/menu1/menu1-1',
-    //       meta: { title: 'Menu1' },
-    //       children: [
-    //         {
-    //           path: 'menu1-1',
-    //           component: () => import(/* webpackChunkName: "menu1-1" */ '@/views/nested/menu1/menu1-1/index.vue'),
-    //           meta: { title: 'Menu1-1' }
-    //         },
-    //         {
-    //           path: 'menu1-2',
-    //           component: () => import(/* webpackChunkName: "menu1-2" */ '@/views/nested/menu1/menu1-2/index.vue'),
-    //           redirect: '/nested/menu1/menu1-2/menu1-2-1',
-    //           meta: { title: 'Menu1-2' },
-    //           children: [
-    //             {
-    //               path: 'menu1-2-1',
-    //               component: () => import(/* webpackChunkName: "menu1-2-1" */ '@/views/nested/menu1/menu1-2/menu1-2-1/index.vue'),
-    //               meta: { title: 'Menu1-2-1' }
-    //             },
-    //             {
-    //               path: 'menu1-2-2',
-    //               component: () => import(/* webpackChunkName: "menu1-2-2" */ '@/views/nested/menu1/menu1-2/menu1-2-2/index.vue'),
-    //               meta: { title: 'Menu1-2-2' }
-    //             }
-    //           ]
-    //         },
-    //         {
-    //           path: 'menu1-3',
-    //           component: () => import(/* webpackChunkName: "menu1-3" */ '@/views/nested/menu1/menu1-3/index.vue'),
-    //           meta: { title: 'Menu1-3' }
-    //         }
-    //       ]
-    //     },
-    //     {
-    //       path: 'menu2',
-    //       component: () => import(/* webpackChunkName: "menu2" */ '@/views/nested/menu2/index.vue'),
-    //       meta: { title: 'Menu2' }
-    //     }
-    //   ]
-    // },
-    // {
-    //   path: 'external-link',
-    //   component: Layout,
-    //   children: [
-    //     {
-    //       path: 'https://github.com/Armour/vue-typescript-admin-template',
-    //       meta: {
-    //         title: 'External Link',
-    //         icon: 'link'
-    //       }
-    //     }
-    //   ]
-    // },
-    {
-      path: '*',
-      redirect: '/404',
-      meta: { hidden: true }
-    }
-  ]
+  routes: routes
 })

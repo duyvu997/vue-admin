@@ -5,10 +5,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import Vue from 'vue'
 
-@Component({
+export default Vue.extend({
   name: 'App'
 })
-export default class extends Vue {}
 </script>
