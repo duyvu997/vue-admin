@@ -8,7 +8,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext ts --es6",
-    "test:unit": "jest --clearCache && vue-cli-service test:unit"
+    "test:unit": "jest --clearCache && vue-cli-service test:unit",
+    "start": "node server.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
