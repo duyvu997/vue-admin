@@ -8,17 +8,20 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext ts --es6",
-    "test:unit": "jest --clearCache && vue-cli-service test:unit"
+    "test:unit": "jest --clearCache && vue-cli-service test:unit",
+    "start": "node server.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "3.14.0",
     "element-ui": "^2.15.1",
+    "express": "4.17.1",
     "js-cookie": "^2.2.1",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "path-to-regexp": "^6.2.0",
     "register-service-worker": "^1.7.2",
+    "serve-static": "1.14.1",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.6",
     "vue-property-decorator": "^9.1.2",
