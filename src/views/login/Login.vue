@@ -10,7 +10,7 @@
     >
       <div class="title-container">
         <h3 class="title">
-          Login Form
+          Đăng Nhập
         </h3>
       </div>
 
@@ -55,7 +55,7 @@
         style="width:100%; margin-bottom:30px;"
         @click.native.prevent="handleLogin"
       >
-        Sign in
+        Đăng nhập
       </el-button>
     </el-form>
   </div>

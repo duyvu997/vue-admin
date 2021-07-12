@@ -113,6 +113,7 @@ export default Vue.extend({
     }
   },
   methods: {
+    /* istanbul ignore next */
     formRef(
       formName: string
     ): Vue & { validate: (func: (valid: boolean) => boolean) => void } {
@@ -120,7 +121,7 @@ export default Vue.extend({
         validate: (func: (valid: boolean) => boolean) => void
       }
     },
-
+    /* istanbul ignore next */
     onSubmit(formName: string) {
       this.formRef(formName).validate((valid: boolean) => {
         if (valid) {
@@ -145,7 +146,7 @@ export default Vue.extend({
         }
       })
     },
-
+    /* istanbul ignore next */
     onCancel() {
       this.$router.push({
         path: '/courses/index'

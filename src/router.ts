@@ -14,6 +14,72 @@ Vue.use(Router)
   }
 */
 
+const routes = [
+  {
+    path: '/login',
+    component: () => import(/* webpackChunkName: "login" */ '@/views/login/Login.vue'),
+    meta: { 
+      title: 'Orange Juice Admin', 
+      hidden: true 
+    }
+  },
+  {
+    path: '/404',
+    component: () => import(/* webpackChunkName: "404" */ '@/views/404.vue'),
+    meta: { hidden: true }
+  },
+  {
+    path: '/',
+    component: Layout,
+    redirect: 'dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/Dashboard.vue'),
+        meta: {
+          title: 'Trang chủ',
+          icon: 'dashboard'
+        }
+      }
+    ]
+  },
+  {
+    path: '/courses',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/courses/CourseList.vue'),
+        meta: {
+          title: 'Khóa học',
+          icon: 'table'
+        }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/courses/CreateCourse.vue'),
+        meta: {
+          title: 'Create Course',
+          hidden: true
+        }
+      },
+      {
+        path: 'edit/:courseId',
+        component: () => import('@/views/courses/UpdateCourse.vue'),
+        meta: {
+          title: 'Update Course',
+          hidden: true
+        }
+      }
+    ]
+  },
+  {
+    path: '*',
+    redirect: '/404',
+    meta: { hidden: true }
+  }
+]
+
 export default new Router({
   // mode: 'history',  // Enable this if you need.
   scrollBehavior: (to, from, savedPosition) => {
@@ -24,66 +90,5 @@ export default new Router({
     }
   },
   base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/login',
-      component: () => import(/* webpackChunkName: "login" */ '@/views/login/Login.vue'),
-      meta: { hidden: true }
-    },
-    {
-      path: '/404',
-      component: () => import(/* webpackChunkName: "404" */ '@/views/404.vue'),
-      meta: { hidden: true }
-    },
-    {
-      path: '/',
-      component: Layout,
-      redirect: '/dashboard',
-      children: [
-        {
-          path: 'dashboard',
-          component: () => import('@/views/dashboard/Dashboard.vue'),
-          meta: {
-            title: 'Dashboard',
-            icon: 'dashboard'
-          }
-        }
-      ]
-    },
-    {
-      path: '/courses',
-      component: Layout,
-      children: [
-        {
-          path: 'index',
-          component: () => import('@/views/courses/CourseList.vue'),
-          meta: {
-            title: 'Courses',
-            icon: 'table'
-          }
-        },
-        {
-          path: 'create',
-          component: () => import('@/views/courses/CreateCourse.vue'),
-          meta: {
-            title: 'Create Course',
-            hidden: true
-          }
-        },
-        {
-          path: 'edit/:courseId',
-          component: () => import('@/views/courses/UpdateCourse.vue'),
-          meta: {
-            title: 'Update Course',
-            hidden: true
-          }
-        }
-      ]
-    },
-    {
-      path: '*',
-      redirect: '/404',
-      meta: { hidden: true }
-    }
-  ]
+  routes: routes
 })

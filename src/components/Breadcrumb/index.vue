@@ -36,6 +36,7 @@ export default class extends Vue {
   private onRouteChange(route: Route) {
     // if you go to the redirect page, do not update the breadcrumbs
     if (route.path.startsWith('/redirect/')) {
+      /* istanbul ignore next */
       return
     }
     this.getBreadcrumb()
@@ -50,28 +51,34 @@ export default class extends Vue {
       item => item.meta && item.meta.title
     )
     const first = matched[0]
+
+    /* istanbul ignore else */
     if (!this.isDashboard(first)) {
       matched = [
-        { path: '/dashboard', meta: { title: 'Dashboard' } } as RouteRecord
+        { path: '/dashboard' } as RouteRecord
       ].concat(matched)
     }
     this.breadcrumbs = matched.filter(item => {
+      /* istanbul ignore next */
       return item.meta && item.meta.title && item.meta.breadcrumb !== false
     })
   }
 
   private isDashboard(route: RouteRecord) {
+    /* istanbul ignore next */
     const name = route && route.meta && route.meta.title
     return name === 'Dashboard'
   }
 
+  /* istanbul ignore next */
   private pathCompile(path: string) {
     // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
     const { params } = this.$route
     const toPath = compile(path)
     return toPath(params)
   }
-
+  
+  /* istanbul ignore next */
   private handleLink(item: any) {
     const { redirect, path } = item
     if (redirect) {

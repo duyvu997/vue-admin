@@ -1,6 +1,4 @@
-import store from "@/store";
-
 const getNamespace = (namespace: string) => (value: string) =>
-  namespace + "/" + value;
+  namespace + '/' + value
 
-export { getNamespace };
+export { getNamespace }

@@ -1,0 +1,525 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateCourse.vue snapshot testing 1`] = `
+<div
+  class="form-create-course-container"
+>
+  <form
+    class="el-form"
+  >
+    <div
+      class="el-form-item is-required"
+    >
+      <label
+        class="el-form-item__label"
+        for="name"
+        style="width: 160px;"
+      >
+        Tên khoá học
+      </label>
+      <div
+        class="el-form-item__content"
+        style="margin-left: 160px;"
+      >
+        <div
+          class="el-input"
+        >
+          <!---->
+          <input
+            autocomplete="off"
+            class="el-input__inner"
+            type="text"
+          />
+          <!---->
+          <!---->
+          <!---->
+          <!---->
+        </div>
+        <transition-stub
+          name="el-zoom-in-top"
+        >
+          <!---->
+        </transition-stub>
+      </div>
+    </div>
+     
+    <div
+      class="el-form-item is-required"
+    >
+      <label
+        class="el-form-item__label"
+        for="duration"
+        style="width: 160px;"
+      >
+        Thời lượng khoá học
+      </label>
+      <div
+        class="el-form-item__content"
+        style="margin-left: 160px;"
+      >
+        <div
+          class="duration-field"
+        >
+          <div
+            class="field"
+            style="margin-right: 10px;"
+          >
+            <div
+              class="el-input"
+            >
+              <!---->
+              <input
+                autocomplete="off"
+                class="el-input__inner"
+                type="text"
+              />
+              <!---->
+              <!---->
+              <!---->
+              <!---->
+            </div>
+          </div>
+           
+          <div
+            class="field"
+          >
+            <div
+              class="el-select"
+              style="width: 100%;"
+            >
+              <!---->
+              <div
+                class="el-input el-input--suffix"
+              >
+                <!---->
+                <input
+                  autocomplete="off"
+                  class="el-input__inner"
+                  placeholder="Lựa chọn đơn vị thời gian"
+                  readonly="readonly"
+                  type="text"
+                />
+                <!---->
+                <span
+                  class="el-input__suffix"
+                >
+                  <span
+                    class="el-input__suffix-inner"
+                  >
+                    <i
+                      class="el-select__caret el-input__icon el-icon-arrow-up"
+                    />
+                    <!---->
+                    <!---->
+                    <!---->
+                    <!---->
+                    <!---->
+                  </span>
+                  <!---->
+                </span>
+                <!---->
+                <!---->
+              </div>
+              <transition-stub
+                name="el-zoom-in-top"
+              >
+                <div
+                  class="el-select-dropdown el-popper"
+                  style="display: none;"
+                >
+                  <div
+                    class="el-scrollbar"
+                    style=""
+                  >
+                    <div
+                      class="el-select-dropdown__wrap el-scrollbar__wrap el-scrollbar__wrap--hidden-default"
+                    >
+                      <ul
+                        class="el-scrollbar__view el-select-dropdown__list"
+                      >
+                        <!---->
+                        <li
+                          class="el-select-dropdown__item selected"
+                        >
+                          <span>
+                            giây
+                          </span>
+                        </li>
+                         
+                        <li
+                          class="el-select-dropdown__item"
+                        >
+                          <span>
+                            phút
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div
+                      class="el-scrollbar__bar is-horizontal"
+                    >
+                      <div
+                        class="el-scrollbar__thumb"
+                        style="transform: translateX(0%); webkit-transform: translateX(0%);"
+                      />
+                    </div>
+                    <div
+                      class="el-scrollbar__bar is-vertical"
+                    >
+                      <div
+                        class="el-scrollbar__thumb"
+                        style="transform: translateY(0%); webkit-transform: translateY(0%);"
+                      />
+                    </div>
+                  </div>
+                  <!---->
+                </div>
+              </transition-stub>
+            </div>
+          </div>
+        </div>
+        <transition-stub
+          name="el-zoom-in-top"
+        >
+          <!---->
+        </transition-stub>
+      </div>
+    </div>
+     
+    <div
+      class="el-form-item is-required"
+    >
+      <label
+        class="el-form-item__label"
+        for="date"
+        style="width: 160px;"
+      >
+        Thời gian học
+      </label>
+      <div
+        class="el-form-item__content"
+        style="margin-left: 160px;"
+      >
+        <div
+          class="el-date-editor el-input el-input--prefix el-input--suffix el-date-editor--date"
+          style="width: 100%;"
+        >
+          <!---->
+          <input
+            autocomplete="off"
+            class="el-input__inner"
+            name=""
+            placeholder="Lựa chọn thời gian học"
+            type="text"
+          />
+          <span
+            class="el-input__prefix"
+          >
+            <i
+              class="el-input__icon el-icon-date"
+            />
+            <!---->
+          </span>
+          <span
+            class="el-input__suffix"
+          >
+            <span
+              class="el-input__suffix-inner"
+            >
+              <i
+                class="el-input__icon"
+              />
+              <!---->
+              <!---->
+              <!---->
+              <!---->
+            </span>
+            <!---->
+          </span>
+          <!---->
+          <!---->
+        </div>
+        <transition-stub
+          name="el-zoom-in-top"
+        >
+          <!---->
+        </transition-stub>
+      </div>
+    </div>
+     
+    <div
+      class="el-form-item"
+    >
+      <label
+        class="el-form-item__label"
+        for="shortMessage"
+        style="width: 160px;"
+      >
+        Thông điệp ngắn
+      </label>
+      <div
+        class="el-form-item__content"
+        style="margin-left: 160px;"
+      >
+        <div
+          class="el-input"
+        >
+          <!---->
+          <input
+            autocomplete="off"
+            class="el-input__inner"
+            type="text"
+          />
+          <!---->
+          <!---->
+          <!---->
+          <!---->
+        </div>
+        <transition-stub
+          name="el-zoom-in-top"
+        >
+          <!---->
+        </transition-stub>
+      </div>
+    </div>
+     
+    <div
+      class="el-form-item"
+    >
+      <label
+        class="el-form-item__label"
+        for="description"
+        style="width: 160px;"
+      >
+        Mô tả
+      </label>
+      <div
+        class="el-form-item__content"
+        style="margin-left: 160px;"
+      >
+        <div
+          class="el-textarea"
+        >
+          <textarea
+            autocomplete="off"
+            class="el-textarea__inner"
+            style="min-height: -4px;"
+          />
+          <!---->
+        </div>
+        <transition-stub
+          name="el-zoom-in-top"
+        >
+          <!---->
+        </transition-stub>
+      </div>
+    </div>
+     
+    <div
+      class="el-form-item"
+    >
+      <label
+        class="el-form-item__label"
+        for="status"
+        style="width: 160px;"
+      >
+        Trạng thái
+      </label>
+      <div
+        class="el-form-item__content"
+        style="margin-left: 160px;"
+      >
+        <div
+          class="el-switch"
+          role="switch"
+        >
+          <input
+            class="el-switch__input"
+            name=""
+            true-value="true"
+            type="checkbox"
+          />
+          <!---->
+          <span
+            class="el-switch__core"
+            style="width: 40px;"
+          />
+          <!---->
+        </div>
+        <transition-stub
+          name="el-zoom-in-top"
+        >
+          <!---->
+        </transition-stub>
+      </div>
+    </div>
+     
+    <div
+      class="el-form-item is-required"
+    >
+      <label
+        class="el-form-item__label"
+        for="minimumAge"
+        style="width: 160px;"
+      >
+        Độ tuổi tối thiểu
+      </label>
+      <div
+        class="el-form-item__content"
+        style="margin-left: 160px;"
+      >
+        <div
+          class="el-input"
+        >
+          <!---->
+          <input
+            autocomplete="off"
+            class="el-input__inner"
+            type="text"
+          />
+          <!---->
+          <!---->
+          <!---->
+          <!---->
+        </div>
+        <transition-stub
+          name="el-zoom-in-top"
+        >
+          <!---->
+        </transition-stub>
+      </div>
+    </div>
+     
+    <div
+      class="el-form-item is-required"
+    >
+      <label
+        class="el-form-item__label"
+        for="maximumAge"
+        style="width: 160px;"
+      >
+        Độ tuổi tối đa
+      </label>
+      <div
+        class="el-form-item__content"
+        style="margin-left: 160px;"
+      >
+        <div
+          class="el-input"
+        >
+          <!---->
+          <input
+            autocomplete="off"
+            class="el-input__inner"
+            type="text"
+          />
+          <!---->
+          <!---->
+          <!---->
+          <!---->
+        </div>
+        <transition-stub
+          name="el-zoom-in-top"
+        >
+          <!---->
+        </transition-stub>
+      </div>
+    </div>
+     
+    <div
+      class="el-form-item"
+    >
+      <label
+        class="el-form-item__label"
+        for="picture"
+        style="width: 160px;"
+      >
+        Hình ảnh
+      </label>
+      <div
+        class="el-form-item__content"
+        style="margin-left: 160px;"
+      >
+        <div
+          style="display: flex;"
+        >
+          <div
+            class="el-upload el-upload--text"
+            tabindex="0"
+          >
+            <button
+              class="el-button el-button--default"
+              style="margin-right: 10px;"
+              type="button"
+            >
+              <!---->
+              <!---->
+              <span>
+                
+          Chọn hình ảnh
+        
+              </span>
+            </button>
+            <input
+              class="el-upload__input"
+              name="file"
+              type="file"
+            />
+          </div>
+          <transition-group-stub
+            class="el-upload-list el-upload-list--text"
+            name="el-list"
+            tag="ul"
+          />
+        </div>
+        <transition-stub
+          name="el-zoom-in-top"
+        >
+          <!---->
+        </transition-stub>
+      </div>
+    </div>
+     
+    <div
+      class="el-form-item"
+    >
+      <!---->
+      <div
+        class="el-form-item__content"
+        style="margin-left: 160px;"
+      >
+        <button
+          class="el-button el-button--default"
+          type="button"
+        >
+          <!---->
+          <!---->
+          <span>
+            
+        Huỷ
+      
+          </span>
+        </button>
+         
+        <button
+          class="el-button el-button--primary"
+          type="button"
+        >
+          <!---->
+          <!---->
+          <span>
+            
+        Tạo
+      
+          </span>
+        </button>
+        <transition-stub
+          name="el-zoom-in-top"
+        >
+          <!---->
+        </transition-stub>
+      </div>
+    </div>
+  </form>
+</div>
+`;

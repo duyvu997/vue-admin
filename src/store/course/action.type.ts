@@ -2,6 +2,7 @@ import { getNamespace } from '@/utils/store-helper'
 
 export const COURSE_NAMESPACE = 'CourseModule'
 export const CREATE_COURSE = 'createCourse'
+export const UPDATE_COURSE = 'updateCourse'
 export const GET_COURSE = 'getCourse'
 export const SET_COURSE = 'setCourse'
 export const SET_COURSES = 'setCourses'

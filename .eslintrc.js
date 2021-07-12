@@ -18,6 +18,7 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-extra-semi': 'off',
     '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'vue/array-bracket-spacing': 'error',
@@ -29,6 +30,7 @@ module.exports = {
     'vue/eqeqeq': 'error',
     'vue/key-spacing': 'error',
     'vue/match-component-file-name': 'error',
+    'vue/no-unused-vars': 'off',
     'no-trailing-spaces': 0,
     'no-multiple-empty-lines': 0,
     'space-before-function-paren': 0

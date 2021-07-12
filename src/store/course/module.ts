@@ -4,7 +4,8 @@ import {
   GET_COURSE,
   GET_COURSES,
   SET_COURSE,
-  SET_COURSES
+  SET_COURSES,
+  UPDATE_COURSE
 } from './action.type'
 import courseApiClient from '@/api/course'
 
@@ -33,6 +34,15 @@ const actions = {
     courseTobeCreated: any
   ) {
     return await courseApiClient.createCourse(courseTobeCreated)
+  },
+
+  async [UPDATE_COURSE](
+    { commit }: { commit: Commit },
+    data: { courseId: string, courseTobeUpdated: any }
+  ) {
+    console.log(data.courseId, 22222)
+    
+    return await courseApiClient.updateCourseById(data.courseId, data.courseTobeUpdated)
   },
 
   async [GET_COURSES]({ commit }: { commit: Commit }) {

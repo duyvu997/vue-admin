@@ -80,7 +80,7 @@
       </el-table-column>
       <el-table-column align="right">
         <template slot-scope="scope">
-          <el-button @click="handleEditCourse(scope.row.id)">Cài đặt</el-button>
+          <el-button @click="handleEditCourse(scope.row.id)">Xem</el-button>
         </template>
       </el-table-column>
     </el-table>
