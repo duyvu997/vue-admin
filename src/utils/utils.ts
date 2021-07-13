@@ -10,6 +10,7 @@ const reverseDay = (date: string | undefined) => {
 const needToReverse = (date: string | undefined) => {
   return date && date.split('-')[0].length !== 4
 }
+
 type obj = { [x: string]: any }
 
 const deference = (oldObj: obj, newObj: obj, dateProperties: string[] = []) => {
