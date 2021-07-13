@@ -64,6 +64,7 @@ const actions = {
       data.courseTobeUpdated
     )
     commit(RESET_ERROR)
+    commit(SET_COURSE, { ...state.course, ...data.courseTobeUpdated })
     return response
   },
 
@@ -75,7 +76,7 @@ const actions = {
 
   async [GET_COURSE]({ commit }: { commit: Commit }, courseId: string) {
     const course = await courseApiClient.getCourseById(courseId)
-    commit(SET_COURSE, course)
+    commit(SET_COURSE, course.data)
     return course
   },
 

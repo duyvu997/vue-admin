@@ -6,6 +6,10 @@ const reverseDay = (date: string | undefined) => {
       .join('-')
     : undefined
 }
+
+const needToReverse = (date: string | undefined) => {
+  return date && date.split('-')[0].length !== 4
+}
 type obj = { [x: string]: any }
 
 const deference = (oldObj: obj, newObj: obj, dateProperties: string[] = []) => {
@@ -14,7 +18,7 @@ const deference = (oldObj: obj, newObj: obj, dateProperties: string[] = []) => {
   const newProperties = Object.keys(newObj)
 
   newProperties.forEach((key) => {
-    if (dateProperties.includes(key)) {
+    if (dateProperties.includes(key) && needToReverse(oldObj[key])) {
       oldObj[key] = reverseDay(oldObj[key])
     }
     if (oldObj[key] !== newObj[key]) {
