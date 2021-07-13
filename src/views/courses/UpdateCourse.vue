@@ -53,17 +53,19 @@
             <el-input style="width: 49.4%;" v-model="form.minAge" />
           </el-form-item>
           <el-form-item label="Hình ảnh" prop="picture">
+            <pan-thumb :image="form.picture123" />
             <el-upload
-              :file-list="form.picture"
+              :file-list="form.picture123"
               :limit="1"
               :auto-upload="false"
               action="https://test.io"
               style="display: flex"
+            ><el-button
+              icon="el-icon-upload"
+              tyle="position: absolute;bottom: 15px;margin-left: 40px;"
             >
-              <el-button style="margin-right: 10px;">
-                Chọn hình ảnh
-              </el-button>
-            </el-upload>
+              Thay đổi
+            </el-button></el-upload>
           </el-form-item>
           <el-form-item>
             <el-button @click="onCancel">
@@ -259,9 +261,15 @@ import {
 import store from '@/store/index'
 import { mapGetters } from 'vuex'
 import { deference, reverseDay } from '@/utils/utils'
+import PanThumb from '@/components/PanThumb/index.vue'
+import AvatarUpload from '@/components/AvatarUpload/index.vue'
 
 export default Vue.extend({
   name: 'UpdateCourse',
+  components: {
+    PanThumb,
+    AvatarUpload
+  },
   async beforeRouteEnter(to, from, next) {
     const promises = []
     promises.push(store.dispatch(courseAction(GET_COURSE), to.params.courseId))
@@ -276,6 +284,9 @@ export default Vue.extend({
   },
   data() {
     return {
+      params: { someParams: 'your_params_goes_here' },
+      headers: { smail: '*_~' },
+      showImageUpload: false,
       form: {
         id: '',
         name: '',
@@ -287,7 +298,8 @@ export default Vue.extend({
         status: false,
         minimumAge: '',
         maximumAge: '',
-        picture: []
+        picture: [],
+        picture123: ''
       },
       rules: {
         name: [
@@ -315,6 +327,18 @@ export default Vue.extend({
   },
 
   methods: {
+    toggleShow() {
+      console.log(33335555)
+      
+      this.showImageUpload = !this.showImageUpload
+    },
+    onClose() {
+      this.showImageUpload = false
+    },
+    onCropUploadSuccess(jsonData: any, field: string) {
+      this.showImageUpload = false
+      this.form.picture123 = jsonData.files[field]
+    },
     formRef(
       formName: string
     ): Vue & { validate: (func: (valid: boolean) => boolean) => void } {
@@ -335,7 +359,8 @@ export default Vue.extend({
         startDate: reverseDay(this.course.startDate),
         endDate: reverseDay(this.course.endDate),
         durationType: 'giây',
-        status: this.course.status === 'ENABLE'
+        status: this.course.status === 'ENABLE',
+        picture123: this.course.courseImageUrl
       }
     },
 
@@ -449,5 +474,11 @@ export default Vue.extend({
 
 .el-pagination {
   align-self: center;
+}
+
+.avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
 }
 </style>

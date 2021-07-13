@@ -32,6 +32,7 @@ module.exports = {
     'vue/key-spacing': 'error',
     'vue/match-component-file-name': 'error',
     'vue/no-unused-vars': 'off',
+    'vue/no-unused-components': 'warn',
     'no-trailing-spaces': 0,
     'no-multiple-empty-lines': 0,
     'space-before-function-paren': 0,

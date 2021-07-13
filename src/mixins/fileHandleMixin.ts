@@ -13,18 +13,28 @@ const defaultImageValue =
 export const fileHanldeMixin = Vue.extend({
   methods: {
     async getFileById(fileId: string): Promise<FileInfo> {
-      return (fileApiClient.getFileById(fileId) as unknown) as FileInfo
+      let fileInfo = {} as FileInfo
+      try {
+        fileInfo = (await (fileApiClient.getFileById(
+          fileId
+        ) as unknown)) as FileInfo
+      } catch (error) {
+        console.log(`An error when get file from server: ${error}`)
+      }
+      return fileInfo
     },
     async buildImageUrl(
       source: any,
       base64PropertyName?: string,
-      imageProperty?: string  
+      imageProperty?: string
     ) {
       if (base64PropertyName && source[base64PropertyName]) {
         const fileInformation = await this.getFileById(
           source[base64PropertyName]
         )
-        return `data:${fileInformation.type};base64,${fileInformation.docByte}`
+        if (fileInformation.type && fileInformation.docByte) {
+          return `data:${fileInformation.type};base64,${fileInformation.docByte}`
+        }
       }
 
       return imageProperty && source[imageProperty]
