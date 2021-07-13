@@ -23,7 +23,10 @@
       <el-table-column align="center" width="95">
         <template slot-scope="scope">
           <div class="block">
-            <el-avatar :size="50" :src="scope.row.courseImageUrl"></el-avatar>
+            <el-avatar
+              :size="50"
+              :src="scope.row.imageUrl"
+            ></el-avatar>
           </div>
         </template>
       </el-table-column>
@@ -65,7 +68,10 @@
       </el-table-column>
       <el-table-column align="center" width="80">
         <template slot-scope="scope">
-          <i class="icon-desc el-icon-s-data" style="transform: rotate(90deg)" />
+          <i
+            class="icon-desc el-icon-s-data"
+            style="transform: rotate(90deg)"
+          />
           <span>{{ scope.row.quizzes }}</span>
         </template> </el-table-column
       ><el-table-column align="center" width="90">
@@ -88,13 +94,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { VueConstructor } from 'vue'
 import store from '@/store'
 import { courseAction, GET_COURSES } from '@/store/course/action.type'
-
-export default Vue.extend({
+import { fileHanldeMixin } from '@/mixins/fileHandleMixin'
+export default (Vue as VueConstructor<
+  Vue & InstanceType<typeof fileHanldeMixin>
+>).extend({
   name: 'CourseList',
-
+  mixins: [fileHanldeMixin],
   data() {
     return {
       listLoading: true,
@@ -118,15 +126,25 @@ export default Vue.extend({
       this.listLoading = true
       try {
         const courses = await store.dispatch(courseAction(GET_COURSES))
-        this.list = courses.data.map((course: any) => ({
-          ...course,
-          status: course.status === 'ENABLE'
-        }))
+        const imagePromises: any[] = []
+        courses.data.forEach((el: any) =>
+          imagePromises.push(this.buildImageUrl(el, 'fileId', 'courseImageUrl'))
+        )
+        const imageUrls = await Promise.all(imagePromises)
+        this.list = courses.data.map((course: any, index: number) => {
+          return {
+            ...course,
+            status: course.status === 'ENABLE',
+            imageUrl: imageUrls[index]
+          }
+        })
+
         this.listLoading = false
       } catch (error) {
         console.warn(error)
       }
     },
+
     handleEditCourse(courseId: string) {
       this.$router.push({ path: `edit/${courseId}` })
     }
