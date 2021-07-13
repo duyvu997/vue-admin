@@ -34,7 +34,8 @@ module.exports = {
     'vue/no-unused-vars': 'off',
     'no-trailing-spaces': 0,
     'no-multiple-empty-lines': 0,
-    'space-before-function-paren': 0
+    'space-before-function-paren': 0,
+    'indent': ['warn', 2]
   },
   overrides: [
     {

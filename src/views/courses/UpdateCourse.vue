@@ -331,11 +331,11 @@ export default Vue.extend({
 
     getInitData() {
       return {
-        ...this.course.data,
-        startDate: reverseDay(this.course.data.startDate),
-        endDate: reverseDay(this.course.data.endDate),
+        ...this.course,
+        startDate: reverseDay(this.course.startDate),
+        endDate: reverseDay(this.course.endDate),
         durationType: 'giây',
-        status: this.course.data.status === 'ENABLE'
+        status: this.course.status === 'ENABLE'
       }
     },
 
@@ -346,6 +346,14 @@ export default Vue.extend({
             'startDate',
             'endDate'
           ])
+          if (!Object.keys(courseTobeUpdated).length) {
+            return true
+          }
+          if (courseTobeUpdated.status !== undefined) {
+            courseTobeUpdated.status = courseTobeUpdated.status
+              ? 'ENABLE'
+              : 'DISABLE'
+          }
           store.dispatch(courseAction(UPDATE_COURSE), {
             courseId: this.form.id,
             courseTobeUpdated
@@ -375,14 +383,14 @@ export default Vue.extend({
       'teachersOfCourse'
     ]),
     lessonsOfCourse(): string {
-      return this.course.data.lessons
+      return this.course.lessons
     },
     pagedTableDataOfStudent(): [] {
       return this.studentsOfCourse.length
         ? this.studentsOfCourse.slice(
-          this.studentPageSize * this.studentPage - this.studentPageSize,
-          this.studentPageSize * this.studentPage
-        )
+            this.studentPageSize * this.studentPage - this.studentPageSize,
+            this.studentPageSize * this.studentPage
+          )
         : []
     }
   }
