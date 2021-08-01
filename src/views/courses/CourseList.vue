@@ -98,6 +98,8 @@ import Vue, { VueConstructor } from 'vue'
 import store from '@/store'
 import { courseAction, GET_COURSES } from '@/store/course/action.type'
 import { fileHanldeMixin } from '@/mixins/fileHandleMixin'
+
+
 export default (Vue as VueConstructor<
   Vue & InstanceType<typeof fileHanldeMixin>
 >).extend({

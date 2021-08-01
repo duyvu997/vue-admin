@@ -121,7 +121,7 @@ export default Vue.extend({
         validate: (func: (valid: boolean) => boolean) => void
       }
     },
-    /* istanbul ignore next */
+    
     onSubmit(formName: string) {
       this.formRef(formName).validate((valid: boolean) => {
         if (valid) {
